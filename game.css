@@ -1,0 +1,63 @@
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+	flex-direction: row;
+	justify-content: center;
+    text-align: center;
+    height: 939px;
+}
+h1{
+    font-size: 60px;
+}
+
+.everything {
+    background-image: url("https://thumbs.dreamstime.com/b/fondo-de-juguetes-con-espacio-copia-coches-juguete-y-pista-carreras-sobre-madera-blanca-en-la-carretera-208437111.jpg");
+    background-position: 50% 0%;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: relative;
+    width: 100%;
+    
+}
+
+
+.button {
+    width: 300px;
+    height: 80px;
+    font-size: 35px;
+    font-weight: 500;
+}
+
+.game {
+    width: 800px;
+    height: 500px;
+    border: solid red 3px;
+    margin-top: 40px;
+
+}
+
+canvas {
+    border: solid black;
+    margin-top: 30px;
+    background-color: blue;
+}
+
+#gameandinfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+h3 {
+    font-size: 25px;
+    padding: 0;
+    margin: 10px;
+}
+
+h4 {
+    font-size: 20px;
+    padding: 0;
+    margin: 10px;
+}
