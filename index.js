@@ -24,8 +24,9 @@ window.onload = () => {
 		rightImage.draw();
 		leftBall.draw();
 		rightBall.draw();
-
-		rightImage.push
+		chronometer.start();
+  	printTime();
+		console.log(leftImage.x)
 	}
 	console.log(gameLoop);
 	
@@ -33,55 +34,62 @@ window.onload = () => {
 		gameLoop();
 	};
 	
+
+	const chronometer = new Chronometer();
+
+	const minDecElement = document.getElementById('minDec');
+	const minUniElement = document.getElementById('minUni');
+	const secDecElement = document.getElementById('secDec');
+	const secUniElement = document.getElementById('secUni');
+
+	function printTime() {
+		setInterval(() => {
+			const seconds = printSeconds();
+			const minutes = printMinutes();
+	
+			console.log('tick', minutes, seconds);
+	
+			minDecElement.innerText = minutes[0];
+			minUniElement.innerText = minutes[1];
+			secDecElement.innerText = seconds[0];
+			secUniElement.innerText = seconds[1];
+		}, 1000);
+	}
+	function printMinutes() {
+		return chronometer.computeTwoDigitNumber(chronometer.getMinutes());
+	}
+	
+	function printSeconds() {
+		return chronometer.computeTwoDigitNumber(chronometer.getSeconds());
+	}
+
 	
 	window.addEventListener('keydown', moveBalls);
 	
 	function moveBalls(event){
-		/*if (left == true) {
-			x -= 15
-		}
-		if (right == true){
-			x += 15
-		}
-
-		public void keyPressed() {
-			if (key == 'a') left = true;
-			if (key == 'd') right = true;
-			if (key == 37) left = true;
-			if (key == 39) right = true;
-		}
-
-		public void keyReleased() {
-			if (key == 'a') left = false;
-			if (key == 'd') right = false;
-			if (key == 37) left = false;
-			if (key == 39) right = false;
-		}
-		*/
-		
-			switch (event.keyCode) {
-				case 65:
-					if (leftBall.x > 0) leftBall.x -= 15;
-					console.log(leftBall.x);
-					break;
-					
-				case 68:
-					if (leftBall.x < canvas.width - leftBall.width) leftBall.x += 15;
-					console.log(leftBall.x);
-					break;
-						
-				case 37:
-					if (rightBall.x > 0) rightBall.x -= 15;
-					console.log(rightBall.x);
-					break;
-							
-				case 39:
-					if (rightBall.x < canvas.width - rightBall.width) rightBall.x += 15;
-					console.log(rightBall.x);
-					break;
-								
-				default:
+		switch (event.keyCode) {
+			case 65:
+				if (leftBall.x > 0) leftBall.x -= 15;
+				console.log(leftBall.x);
 				break;
-			}
-		}		
-	}
+
+			case 68:
+				if (leftBall.x < canvas.width - leftBall.width) leftBall.x += 15;
+				console.log(leftBall.x);
+				break;
+
+			case 37:
+				if (rightBall.x > 0) rightBall.x -= 15;
+				console.log(rightBall.x);
+				break;
+
+			case 39:
+				if (rightBall.x < canvas.width - rightBall.width) rightBall.x += 15;
+				console.log(rightBall.x);
+				break;
+
+			default:
+			break;
+		}
+	}		
+}

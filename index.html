@@ -14,13 +14,22 @@
             <div class="gameandinfo">
                 <div id="game-board">
                     <canvas id="canvas" width="800" height="500"></canvas>
-            </div>
+                </div>
                 <div>
-                    <h3>Score:</h3>
-                    <h4>Times out of the road:</h4>
-                    <h4>Seconds out of the road:</h4>
+                    <h3>Lives:</h3>
+                    <section id="clock">
+                        <div id="sphere">
+                            <h3>Time playing:</h3>
+                            <span id="minDec" class="number">0</span>
+                            <span id="minUni" class="number">0</span>
+                            <span>:</span>
+                            <span id="secDec" class="number">0</span>
+                            <span id="secUni" class="number">0</span>
+                      </section>
+                </div>
             </div>
         </div>
+        <script type="text/javascript" src="chrono.js"></script>
         <script type="text/javascript" src="balls.js"></script>
         <script type="text/javascript" src="roads.js"></script>
         <script type="text/javascript" src="index.js"></script>
