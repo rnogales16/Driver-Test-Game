@@ -16,7 +16,6 @@ window.onload = () => {
 
 	function gameLoop() {
 		frameId = requestAnimationFrame(gameLoop);
-		console.log('hola');
 		ctx.clearRect(0, 0, 800, 500);
 		rightImage.move();
 		leftImage.move()
@@ -43,7 +42,6 @@ window.onload = () => {
 	const secUniElement = document.getElementById('secUni');
 
 	function printTime() {
-		setInterval(() => {
 			const seconds = printSeconds();
 			const minutes = printMinutes();
 	
@@ -53,7 +51,7 @@ window.onload = () => {
 			minUniElement.innerText = minutes[1];
 			secDecElement.innerText = seconds[0];
 			secUniElement.innerText = seconds[1];
-		}, 1000);
+		
 	}
 	function printMinutes() {
 		return chronometer.computeTwoDigitNumber(chronometer.getMinutes());
