@@ -18,14 +18,17 @@ window.onload = () => {
 		frameId = requestAnimationFrame(gameLoop);
 		ctx.clearRect(0, 0, 800, 500);
 		rightImage.move();
+		rightImage.draw();
 		leftImage.move()
 		leftImage.draw();
-		rightImage.draw();
 		leftBall.draw();
 		rightBall.draw();
+		leftBall.position();
+		rightBall.position();
 		chronometer.start();
   	printTime();
-		console.log(leftImage.x)
+		printLives();
+		checkGameOver();
 	}
 	console.log(gameLoop);
 	
@@ -33,6 +36,20 @@ window.onload = () => {
 		gameLoop();
 	};
 	
+	const livesElements = document.getElementById('lives')
+
+	function printLives() {
+		livesElements.innerText = leftBall.lives + rightBall.lives;
+	}
+
+	function checkGameOver() {
+		if (leftBall.lives + rightBall.lives <= 0){
+			cancelAnimationFrame(frameId);
+			alert('Game Over!')
+			window.location.reload();
+		}
+	}
+
 
 	const chronometer = new Chronometer();
 

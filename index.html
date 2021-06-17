@@ -12,11 +12,12 @@
             <h1>Driver Test Game</h1>
             <button id="button">Start Test</button>
             <div class="gameandinfo">
-                <div id="game-board">
-                    <canvas id="canvas" width="800" height="500"></canvas>
-                </div>
+            <canvas id="canvas" width="800" height="500"></canvas>
                 <div>
-                    <h3>Lives:</h3>
+                    <div>
+                        <h3>Lives:</h3>
+                        <span id='lives'>1000</span>
+                    </div>
                     <section id="clock">
                         <div id="sphere">
                             <h3>Time playing:</h3>
@@ -30,6 +31,7 @@
             </div>
         </div>
         <script type="text/javascript" src="chrono.js"></script>
+        <script type="text/javascript" src="checkOnRoad.js"></script>
         <script type="text/javascript" src="balls.js"></script>
         <script type="text/javascript" src="roads.js"></script>
         <script type="text/javascript" src="index.js"></script>

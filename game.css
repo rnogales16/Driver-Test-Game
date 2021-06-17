@@ -7,10 +7,6 @@ body{
     text-align: center;
     height: 939px;
 }
-h1{
-    font-size: 60px;
-    color: blue;
-}
 
 .everything {
     background-image: url("https://thumbs.dreamstime.com/b/fondo-de-juguetes-con-espacio-copia-coches-juguete-y-pista-carreras-sobre-madera-blanca-en-la-carretera-208437111.jpg");
@@ -22,6 +18,10 @@ h1{
     
 }
 
+h1{
+    font-size: 60px;
+    color: blue;
+}
 
 #button {
     width: 300px;
@@ -32,12 +32,11 @@ h1{
     color: blue;
 }
 
-.game {
-    width: 800px;
-    height: 500px;
-    border: solid red 3px;
+#gameandinfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     margin-top: 40px;
-
 }
 
 canvas {
@@ -46,12 +45,6 @@ canvas {
     background-color: blue;
 }
 
-#gameandinfo{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 40px;
-}
 
 h3 {
     font-size: 25px;
