@@ -25,8 +25,6 @@ window.onload = () => {
 		rightBall.draw();
 		leftBall.position();
 		rightBall.position();
-		chronometer.start();
-  	printTime();
 		printLives();
 		checkGameOver();
 	}
@@ -34,6 +32,8 @@ window.onload = () => {
 	
 	document.getElementById('button').onclick = () => {
 		gameLoop();
+		chronometer.start();
+  	printTime();
 	};
 	
 	const livesElements = document.getElementById('lives')
@@ -59,6 +59,7 @@ window.onload = () => {
 	const secUniElement = document.getElementById('secUni');
 
 	function printTime() {
+		setInterval(() => {
 			const seconds = printSeconds();
 			const minutes = printMinutes();
 	
@@ -68,6 +69,7 @@ window.onload = () => {
 			minUniElement.innerText = minutes[1];
 			secDecElement.innerText = seconds[0];
 			secUniElement.innerText = seconds[1];
+		}, 1000);
 		
 	}
 	function printMinutes() {

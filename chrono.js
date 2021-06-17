@@ -4,8 +4,10 @@ class Chronometer {
     this.intervalId = null;
   }
 
-  start() {
-    if (this.intervalId % 17 === 0) this.currentTime += 1;
+  start(callback) {
+    this.intervalId = setInterval(() => {
+      this.currentTime += 1;
+    }, 1000)
   }
 
   getMinutes() {

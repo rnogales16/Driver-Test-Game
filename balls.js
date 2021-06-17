@@ -5,6 +5,10 @@ console.log(leftBallImg);
 const rightBall = document.createElement("img");
 rightBall.src = "./images/Circulo_verde.png";
 
+
+let musicBeep = new Audio("./images/beep.mov")
+
+
 class bolaizquierda {
   constructor(canvasContext, positionX, ball) {
     this.ctx = canvasContext;
@@ -23,7 +27,10 @@ class bolaizquierda {
   position(){
     console.log(this.lives);
     if (!isOnRoad(this.ctx, this.x, this.y, this.width)) {
-      this.lives -= 1; //y que suene pitido
+      this.lives -= 1;
+      musicBeep.volume = 0.5;
+      musicBeep.balance = -1;
+      musicBeep.play();
     }
   }
 }
@@ -46,7 +53,10 @@ class boladerecha {
   position(){
     console.log(this.lives);
     if (!isOnRoad(this.ctx, this.x, this.y, this.width)) {
-      this.lives -= 1; //y que suene pitido
+      this.lives -= 1;
+      musicBeep.volume = 0.5;
+      musicBeep.balance = -1;
+      musicBeep.play();
     }
   }
 }
