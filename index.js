@@ -14,7 +14,7 @@ window.onload = () => {
   let paused = false;
   let gameStarted = false;
   let gameOver = false;
-  const MOVE_STEP = 15;
+  const MOVE_STEP = 2.5;
   const SPEED_INCREMENT = 0.3;
   const SPEED_INTERVAL_SEC = 15;
 
@@ -41,11 +41,31 @@ window.onload = () => {
 
   let currentSpeed = 1;
   let timerIntervalId = null;
+  const keys = {};
+
+  window.addEventListener("keydown", (e) => { keys[e.key] = true; });
+  window.addEventListener("keyup", (e) => { keys[e.key] = false; });
+
+  function moveBalls() {
+    if (keys["a"] || keys["A"]) {
+      if (leftBall.x - MOVE_STEP >= 0) leftBall.x -= MOVE_STEP;
+    }
+    if (keys["d"] || keys["D"]) {
+      if (leftBall.x + MOVE_STEP <= 343) leftBall.x += MOVE_STEP;
+    }
+    if (keys["ArrowLeft"]) {
+      if (rightBall.x - MOVE_STEP >= 402) rightBall.x -= MOVE_STEP;
+    }
+    if (keys["ArrowRight"]) {
+      if (rightBall.x + MOVE_STEP <= canvas.width - rightBall.width) rightBall.x += MOVE_STEP;
+    }
+  }
 
   function gameLoop() {
     if (paused || gameOver) return;
     frameId = requestAnimationFrame(gameLoop);
 
+    moveBalls();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     leftRoad.move();
@@ -53,10 +73,10 @@ window.onload = () => {
     rightRoad.move();
     rightRoad.draw();
 
-    leftBall.draw();
-    rightBall.draw();
     leftBall.checkPosition();
     rightBall.checkPosition();
+    leftBall.draw();
+    rightBall.draw();
 
     updateUI();
     checkSpeedUp();
@@ -125,8 +145,8 @@ window.onload = () => {
     gameStarted = false;
     currentSpeed = 1;
 
-    leftBall.lives = 500;
-    rightBall.lives = 500;
+    leftBall.lives = 5000;
+    rightBall.lives = 5000;
     leftBall.x = 160;
     rightBall.x = 568;
     leftRoad.setSpeed(1);
@@ -135,7 +155,7 @@ window.onload = () => {
     rightRoad.y = 0;
 
     chronometer.reset();
-    livesEl.innerText = "1000";
+    livesEl.innerText = "10000";
     speedEl.innerText = "1x";
     updateTimer();
 
@@ -177,33 +197,14 @@ window.onload = () => {
     resetGame();
   });
 
-  // Keyboard controls
+  // Pause and prevent default for arrow keys
   window.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
       event.preventDefault();
       togglePause();
-      return;
     }
-
-    if (paused || !gameStarted || gameOver) return;
-
-    switch (event.key) {
-      case "a":
-      case "A":
-        if (leftBall.x > 0) leftBall.x -= MOVE_STEP;
-        break;
-      case "d":
-      case "D":
-        if (leftBall.x < canvas.width - leftBall.width) leftBall.x += MOVE_STEP;
-        break;
-      case "ArrowLeft":
-        event.preventDefault();
-        if (rightBall.x > 0) rightBall.x -= MOVE_STEP;
-        break;
-      case "ArrowRight":
-        event.preventDefault();
-        if (rightBall.x < canvas.width - rightBall.width) rightBall.x += MOVE_STEP;
-        break;
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
     }
   });
 };

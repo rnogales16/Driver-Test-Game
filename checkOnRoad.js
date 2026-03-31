@@ -1,56 +1,40 @@
-//Midpoint circle algorithm
-//http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
-
 function isRoadColor([r, g, b, a]) {
-  return r > 200 && g > 200 && b < 100 && a > 200;
+  return r > 180 && g > 180 && b < 130 && a > 150;
 }
 
-function getPixelColor(xP, yP, width, imageData){
-  const index = (xP+yP*width)*4
-  const R = imageData[index + 0]
-  const G = imageData[index + 1]
-  const B = imageData[index + 2]
-  const A = imageData[index + 3]
-  return [R,G,B,A]
+function getPixelColor(xP, yP, width, imageData) {
+  const index = (xP + yP * width) * 4;
+  return [
+    imageData[index],
+    imageData[index + 1],
+    imageData[index + 2],
+    imageData[index + 3]
+  ];
 }
-	
-function isOnRoad(ctx, x0, y0, width=70) {
-  const diameter = width + 4
-  const radius = Math.round(diameter / 2)
-  const xS = x0 - 2
-  const yS = y0 - 2
 
-  const imageData = ctx.getImageData(xS, yS, diameter, diameter).data
+function isOnRoad(ctx, x0, y0, width = 70) {
+  const checkRadius = Math.round(width * 0.48);
+  const diameter = checkRadius * 2;
+  const cx = x0 + Math.round(width / 2);
+  const cy = y0 + Math.round(width / 2);
+  const startX = cx - checkRadius;
+  const startY = cy - checkRadius;
 
-  let xI = radius;
-  let yI = 0;
-  const xC = radius
-  const yC = radius
-  let radiusError = 1 - xI;
+  const imageData = ctx.getImageData(startX, startY, diameter, diameter).data;
 
-  let allPixelsAreRoad = true
-  while (xI>= yI) {
-    allPixelsAreRoad = [
-      getPixelColor(xI + xC, yI + yC, diameter, imageData),
-      getPixelColor(yI + xC, xI + yC, diameter, imageData),
-      getPixelColor(-xI + xC, yI + yC, diameter, imageData),
-      getPixelColor(-yI + xC, xI + yC, diameter, imageData),
-      getPixelColor(-xI + xC, -yI + yC, diameter, imageData),
-      getPixelColor(-yI + xC, -xI + yC, diameter, imageData),
-      getPixelColor(xI + xC, -yI + yC, diameter, imageData),
-      getPixelColor(yI + xC, -xI + yC, diameter, imageData)
-    ].every(isRoadColor)
+  let totalPoints = 0;
+  let roadPoints = 0;
 
-  if(!allPixelsAreRoad) return false
-  
-  yI++;
-
-  if (radiusError < 0) {
-      radiusError += 2 * yI + 1;
-  } else {
-    xI--;
-    radiusError+= 2 * (yI - xI + 1);
+  // Sample 12 evenly spaced points at the check radius
+  for (let i = 0; i < 12; i++) {
+    const angle = (i * Math.PI * 2) / 12;
+    const px = Math.round(checkRadius + Math.cos(angle) * (checkRadius - 1));
+    const py = Math.round(checkRadius + Math.sin(angle) * (checkRadius - 1));
+    totalPoints++;
+    if (isRoadColor(getPixelColor(px, py, diameter, imageData))) {
+      roadPoints++;
+    }
   }
+
+  return roadPoints >= totalPoints * 0.85;
 }
-  return true
-};

@@ -14,7 +14,7 @@ class Ball {
     this.width = 70;
     this.height = 70;
     this.image = image;
-    this.lives = 500;
+    this.lives = 5000;
   }
 
   draw() {
