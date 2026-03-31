@@ -35,7 +35,7 @@ class Ball {
     this.width = 70;
     this.height = 70;
     this.image = image;
-    this.lives = 5000;
+    this.lives = 2500;
     this.onRoad = true;
   }
 
