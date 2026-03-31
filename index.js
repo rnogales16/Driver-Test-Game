@@ -8,6 +8,12 @@ window.onload = () => {
   const leftBall = new Ball(ctx, 160, leftBallImg);
   const rightBall = new Ball(ctx, 568, rightBallImg);
 
+  // Slightly smaller balls
+  leftBall.width = 60;
+  leftBall.height = 60;
+  rightBall.width = 60;
+  rightBall.height = 60;
+
   const chronometer = new Chronometer();
 
   let frameId = null;
@@ -18,6 +24,12 @@ window.onload = () => {
   const MOVE_STEP = 2.5;
   const SPEED_INCREMENT = 0.3;
   const SPEED_INTERVAL_SEC = 15;
+
+  // Stats tracking
+  let totalFrames = 0;
+  let framesOnRoad = 0;
+  let currentStreak = 0;
+  let bestStreak = 0;
 
   // DOM elements
   const livesEl = document.getElementById("lives");
@@ -31,11 +43,21 @@ window.onload = () => {
   const overlay = document.getElementById("gameover-overlay");
   const finalTimeEl = document.getElementById("final-time");
   const finalSpeedEl = document.getElementById("final-speed");
+  const finalAccuracyEl = document.getElementById("final-accuracy");
+  const finalStreakEl = document.getElementById("final-streak");
   const newRecordEl = document.getElementById("new-record");
   const restartBtn = document.getElementById("restart-btn");
-
+  const instructionsOverlay = document.getElementById("instructions-overlay");
   const modeProgressiveBtn = document.getElementById("mode-progressive");
   const modeConstantBtn = document.getElementById("mode-constant");
+  const modeDescEl = document.getElementById("mode-desc");
+  const touchControls = document.getElementById("touch-controls");
+
+  // Detect mobile and show touch controls
+  const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  if (isMobile && touchControls) {
+    touchControls.classList.remove("hidden");
+  }
 
   function loadHighScore() {
     const key = "drivertest-highscore-" + gameMode;
@@ -46,18 +68,18 @@ window.onload = () => {
   loadHighScore();
 
   modeProgressiveBtn.addEventListener("click", () => {
-    if (gameStarted) return;
     gameMode = "progressive";
     modeProgressiveBtn.classList.add("active");
     modeConstantBtn.classList.remove("active");
+    modeDescEl.innerText = "La velocidad aumenta cada 15 segundos";
     loadHighScore();
   });
 
   modeConstantBtn.addEventListener("click", () => {
-    if (gameStarted) return;
     gameMode = "constant";
     modeConstantBtn.classList.add("active");
     modeProgressiveBtn.classList.remove("active");
+    modeDescEl.innerText = "Velocidad constante durante toda la partida";
     loadHighScore();
   });
 
@@ -83,6 +105,47 @@ window.onload = () => {
     }
   }
 
+  // Touch controls
+  if (touchControls) {
+    const touchBtns = touchControls.querySelectorAll(".touch-btn");
+    touchBtns.forEach((btn) => {
+      const ball = btn.dataset.ball;
+      const dir = btn.dataset.dir;
+
+      let touchInterval = null;
+
+      function startMove() {
+        if (!gameStarted || paused || gameOver) return;
+        doMove();
+        touchInterval = setInterval(doMove, 30);
+      }
+
+      function stopMove() {
+        clearInterval(touchInterval);
+        touchInterval = null;
+      }
+
+      function doMove() {
+        if (ball === "left" && dir === "left") {
+          if (leftBall.x - MOVE_STEP >= 0) leftBall.x -= MOVE_STEP;
+        } else if (ball === "left" && dir === "right") {
+          if (leftBall.x + MOVE_STEP <= 343) leftBall.x += MOVE_STEP;
+        } else if (ball === "right" && dir === "left") {
+          if (rightBall.x - MOVE_STEP >= 402) rightBall.x -= MOVE_STEP;
+        } else if (ball === "right" && dir === "right") {
+          if (rightBall.x + MOVE_STEP <= canvas.width - rightBall.width) rightBall.x += MOVE_STEP;
+        }
+      }
+
+      btn.addEventListener("touchstart", (e) => { e.preventDefault(); startMove(); });
+      btn.addEventListener("touchend", stopMove);
+      btn.addEventListener("touchcancel", stopMove);
+      btn.addEventListener("mousedown", startMove);
+      btn.addEventListener("mouseup", stopMove);
+      btn.addEventListener("mouseleave", stopMove);
+    });
+  }
+
   function gameLoop() {
     if (paused || gameOver) return;
     frameId = requestAnimationFrame(gameLoop);
@@ -99,6 +162,17 @@ window.onload = () => {
     rightBall.checkPosition();
     leftBall.draw();
     rightBall.draw();
+
+    // Track stats
+    totalFrames++;
+    const bothOnRoad = leftBall.onRoad && rightBall.onRoad;
+    if (bothOnRoad) {
+      framesOnRoad++;
+      currentStreak++;
+      if (currentStreak > bestStreak) bestStreak = currentStreak;
+    } else {
+      currentStreak = 0;
+    }
 
     updateUI();
     checkSpeedUp();
@@ -147,6 +221,14 @@ window.onload = () => {
     finalTimeEl.innerText = timeStr;
     finalSpeedEl.innerText = currentSpeed.toFixed(1) + "x";
 
+    // Accuracy
+    const accuracy = totalFrames > 0 ? Math.round((framesOnRoad / totalFrames) * 100) : 0;
+    finalAccuracyEl.innerText = accuracy + "%";
+
+    // Best streak in seconds (approx 60fps)
+    const streakSec = (bestStreak / 60).toFixed(1);
+    finalStreakEl.innerText = streakSec + "s";
+
     // Check high score (by seconds survived, per mode)
     const secKey = "drivertest-highscore-sec-" + gameMode;
     const strKey = "drivertest-highscore-" + gameMode;
@@ -180,14 +262,19 @@ window.onload = () => {
     leftRoad.y = 0;
     rightRoad.y = 0;
 
+    // Reset stats
+    totalFrames = 0;
+    framesOnRoad = 0;
+    currentStreak = 0;
+    bestStreak = 0;
+
     chronometer.reset();
     livesEl.innerText = "5000";
     speedEl.innerText = "1x";
     updateTimer();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    startBtn.style.display = "";
-    document.querySelector(".mode-selector").style.display = "";
+    instructionsOverlay.classList.remove("hidden");
     loadHighScore();
   }
 
@@ -201,7 +288,6 @@ window.onload = () => {
       offRoadCount = 0;
       leftBall.onRoad = true;
       rightBall.onRoad = true;
-      // Draw pause text
       ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
@@ -215,12 +301,12 @@ window.onload = () => {
     }
   }
 
-  // Start game
+  // Start game from instructions overlay
   startBtn.addEventListener("click", () => {
     if (gameStarted) return;
     gameStarted = true;
-    startBtn.style.display = "none";
-    document.querySelector(".mode-selector").style.display = "none";
+    instructionsOverlay.classList.add("hidden");
+    if (audioCtx.state === "suspended") audioCtx.resume();
     chronometer.start();
     timerIntervalId = setInterval(updateTimer, 1000);
     gameLoop();
