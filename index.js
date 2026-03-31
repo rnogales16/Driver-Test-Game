@@ -1,112 +1,209 @@
 window.onload = () => {
+  const canvas = document.querySelector("canvas");
+  const ctx = canvas.getContext("2d");
 
-	const canvas = document.querySelector('canvas');
-	const ctx = canvas.getContext('2d');
-	let frameId = null;
+  const leftRoad = new Road(ctx, leftRoadImg, 0);
+  const rightRoad = new Road(ctx, rightRoadImg, 400);
 
-	
-	const leftImage = new fotoizquierda(ctx);
-	const rightImage = new fotoderecha(ctx);
-	
-	const leftBall = new bolaizquierda(ctx, 160);
-	const rightBall = new boladerecha(ctx, 568);
-	
-	console.log(leftBall);
+  const leftBall = new Ball(ctx, 160, leftBallImg);
+  const rightBall = new Ball(ctx, 568, rightBallImg);
 
+  const chronometer = new Chronometer();
 
-	function gameLoop() {
-		frameId = requestAnimationFrame(gameLoop);
-		ctx.clearRect(0, 0, 800, 500);
-		rightImage.move();
-		rightImage.draw();
-		leftImage.move()
-		leftImage.draw();
-		leftBall.draw();
-		rightBall.draw();
-		leftBall.position();
-		rightBall.position();
-		printLives();
-		checkGameOver();
-	}
-	console.log(gameLoop);
-	
-	document.getElementById('button').onclick = () => {
-		gameLoop();
-		chronometer.start();
-  	printTime();
-	};
-	
-	const livesElements = document.getElementById('lives')
+  let frameId = null;
+  let paused = false;
+  let gameStarted = false;
+  let gameOver = false;
+  const MOVE_STEP = 15;
+  const SPEED_INCREMENT = 0.3;
+  const SPEED_INTERVAL_SEC = 15;
 
-	function printLives() {
-		livesElements.innerText = leftBall.lives + rightBall.lives;
-	}
+  // DOM elements
+  const livesEl = document.getElementById("lives");
+  const speedEl = document.getElementById("speed");
+  const highscoreEl = document.getElementById("highscore");
+  const minDecEl = document.getElementById("minDec");
+  const minUniEl = document.getElementById("minUni");
+  const secDecEl = document.getElementById("secDec");
+  const secUniEl = document.getElementById("secUni");
+  const startBtn = document.getElementById("button");
+  const overlay = document.getElementById("gameover-overlay");
+  const finalTimeEl = document.getElementById("final-time");
+  const finalSpeedEl = document.getElementById("final-speed");
+  const newRecordEl = document.getElementById("new-record");
+  const restartBtn = document.getElementById("restart-btn");
 
-	function checkGameOver() {
-		if (leftBall.lives + rightBall.lives <= 0){
-			cancelAnimationFrame(frameId);
-			alert('Game Over!')
-			window.location.reload();
-		}
-	}
+  // Load high score
+  const savedHighScore = localStorage.getItem("drivertest-highscore");
+  if (savedHighScore) {
+    highscoreEl.innerText = savedHighScore;
+  }
 
+  let currentSpeed = 1;
+  let timerIntervalId = null;
 
-	const chronometer = new Chronometer();
+  function gameLoop() {
+    if (paused || gameOver) return;
+    frameId = requestAnimationFrame(gameLoop);
 
-	const minDecElement = document.getElementById('minDec');
-	const minUniElement = document.getElementById('minUni');
-	const secDecElement = document.getElementById('secDec');
-	const secUniElement = document.getElementById('secUni');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	function printTime() {
-		setInterval(() => {
-			const seconds = printSeconds();
-			const minutes = printMinutes();
-	
-			console.log('tick', minutes, seconds);
-	
-			minDecElement.innerText = minutes[0];
-			minUniElement.innerText = minutes[1];
-			secDecElement.innerText = seconds[0];
-			secUniElement.innerText = seconds[1];
-		}, 1000);
-		
-	}
-	function printMinutes() {
-		return chronometer.computeTwoDigitNumber(chronometer.getMinutes());
-	}
-	
-	function printSeconds() {
-		return chronometer.computeTwoDigitNumber(chronometer.getSeconds());
-	}
+    leftRoad.move();
+    leftRoad.draw();
+    rightRoad.move();
+    rightRoad.draw();
 
-	
-	window.addEventListener('keydown', moveBalls);
-	
-	function moveBalls(event){
-		switch (event.keyCode) {
-			case 65:
-				if (leftBall.x > 0) leftBall.x -= 15;
-				console.log(leftBall.x);
-				break;
+    leftBall.draw();
+    rightBall.draw();
+    leftBall.checkPosition();
+    rightBall.checkPosition();
 
-			case 68:
-				if (leftBall.x < canvas.width - leftBall.width) leftBall.x += 15;
-				console.log(leftBall.x);
-				break;
+    updateUI();
+    checkSpeedUp();
+    checkGameOver();
+  }
 
-			case 37:
-				if (rightBall.x > 0) rightBall.x -= 15;
-				console.log(rightBall.x);
-				break;
+  function updateUI() {
+    livesEl.innerText = leftBall.lives + rightBall.lives;
+  }
 
-			case 39:
-				if (rightBall.x < canvas.width - rightBall.width) rightBall.x += 15;
-				console.log(rightBall.x);
-				break;
+  function updateTimer() {
+    const min = chronometer.computeTwoDigitNumber(chronometer.getMinutes());
+    const sec = chronometer.computeTwoDigitNumber(chronometer.getSeconds());
+    minDecEl.innerText = min[0];
+    minUniEl.innerText = min[1];
+    secDecEl.innerText = sec[0];
+    secUniEl.innerText = sec[1];
+  }
 
-			default:
-			break;
-		}
-	}		
-}
+  function checkSpeedUp() {
+    const elapsed = chronometer.currentTime;
+    const expectedSpeed = 1 + Math.floor(elapsed / SPEED_INTERVAL_SEC) * SPEED_INCREMENT;
+    if (expectedSpeed !== currentSpeed) {
+      currentSpeed = expectedSpeed;
+      leftRoad.setSpeed(currentSpeed);
+      rightRoad.setSpeed(currentSpeed);
+      speedEl.innerText = currentSpeed.toFixed(1) + "x";
+    }
+  }
+
+  function checkGameOver() {
+    const totalLives = leftBall.lives + rightBall.lives;
+    if (totalLives <= 0) {
+      gameOver = true;
+      cancelAnimationFrame(frameId);
+      chronometer.stop();
+      clearInterval(timerIntervalId);
+      showGameOver();
+    }
+  }
+
+  function showGameOver() {
+    const timeStr = chronometer.getTimeString();
+    finalTimeEl.innerText = timeStr;
+    finalSpeedEl.innerText = currentSpeed.toFixed(1) + "x";
+
+    // Check high score (by seconds survived)
+    const prevBest = parseInt(localStorage.getItem("drivertest-highscore-sec") || "0");
+    const current = chronometer.currentTime;
+    if (current > prevBest) {
+      localStorage.setItem("drivertest-highscore-sec", current);
+      localStorage.setItem("drivertest-highscore", timeStr);
+      highscoreEl.innerText = timeStr;
+      newRecordEl.classList.remove("hidden");
+    } else {
+      newRecordEl.classList.add("hidden");
+    }
+
+    overlay.classList.remove("hidden");
+  }
+
+  function resetGame() {
+    overlay.classList.add("hidden");
+    gameOver = false;
+    paused = false;
+    gameStarted = false;
+    currentSpeed = 1;
+
+    leftBall.lives = 500;
+    rightBall.lives = 500;
+    leftBall.x = 160;
+    rightBall.x = 568;
+    leftRoad.setSpeed(1);
+    rightRoad.setSpeed(1);
+    leftRoad.y = 0;
+    rightRoad.y = 0;
+
+    chronometer.reset();
+    livesEl.innerText = "1000";
+    speedEl.innerText = "1x";
+    updateTimer();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    startBtn.style.display = "";
+  }
+
+  function togglePause() {
+    if (!gameStarted || gameOver) return;
+    paused = !paused;
+    if (paused) {
+      chronometer.stop();
+      clearInterval(timerIntervalId);
+      // Draw pause text
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.font = "bold 60px Roboto, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("PAUSA", canvas.width / 2, canvas.height / 2);
+    } else {
+      chronometer.start();
+      timerIntervalId = setInterval(updateTimer, 1000);
+      gameLoop();
+    }
+  }
+
+  // Start game
+  startBtn.addEventListener("click", () => {
+    if (gameStarted) return;
+    gameStarted = true;
+    startBtn.style.display = "none";
+    chronometer.start();
+    timerIntervalId = setInterval(updateTimer, 1000);
+    gameLoop();
+  });
+
+  restartBtn.addEventListener("click", () => {
+    resetGame();
+  });
+
+  // Keyboard controls
+  window.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+      event.preventDefault();
+      togglePause();
+      return;
+    }
+
+    if (paused || !gameStarted || gameOver) return;
+
+    switch (event.key) {
+      case "a":
+      case "A":
+        if (leftBall.x > 0) leftBall.x -= MOVE_STEP;
+        break;
+      case "d":
+      case "D":
+        if (leftBall.x < canvas.width - leftBall.width) leftBall.x += MOVE_STEP;
+        break;
+      case "ArrowLeft":
+        event.preventDefault();
+        if (rightBall.x > 0) rightBall.x -= MOVE_STEP;
+        break;
+      case "ArrowRight":
+        event.preventDefault();
+        if (rightBall.x < canvas.width - rightBall.width) rightBall.x += MOVE_STEP;
+        break;
+    }
+  });
+};

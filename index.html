@@ -1,43 +1,68 @@
 <!DOCTYPE html>
-
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="game.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <div class="everything">
-            <h1>Driver Test Game</h1>
-            <button id="button">Start Test</button>
-            <p>Para jugar solo tienes que usar las teclas A y D para mover la pelota de la derecha y las flechas ← → para la pelota de la izquierda.</p>
-            <div class="gameandinfo">
-            <canvas id="canvas" width="800" height="500"></canvas>
-                <div>
-                    <div class="lives1000">
-                        <h3>Lives:</h3>
-                        <span id='lives'>1000</span>
-                    </div>
-                    <section id="clock">
-                        <div id="sphere">
-                            <h3>Time playing:</h3>
-                            <span id="minDec" class="number">0</span>
-                            <span id="minUni" class="number">0</span>
-                            <span>:</span>
-                            <span id="secDec" class="number">0</span>
-                            <span id="secUni" class="number">0</span>
-                      </section>
-                </div>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="game.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Driver Test Game</title>
+  </head>
+  <body>
+    <div class="everything">
+      <h1>Driver Test Game</h1>
+      <div class="controls-info">
+        <p>
+          Usa <kbd>A</kbd> y <kbd>D</kbd> para la bola izquierda |
+          <kbd>&larr;</kbd> <kbd>&rarr;</kbd> para la derecha |
+          <kbd>Space</kbd> para pausar
+        </p>
+      </div>
+      <button id="button">Start Test</button>
+      <div class="gameandinfo">
+        <canvas id="canvas" width="800" height="500"></canvas>
+        <div class="sidebar">
+          <div class="info-box">
+            <h3>Lives</h3>
+            <span id="lives" class="info-value">1000</span>
+          </div>
+          <div class="info-box">
+            <h3>Time</h3>
+            <div id="timer" class="info-value">
+              <span id="minDec">0</span><span id="minUni">0</span><span class="separator">:</span><span id="secDec">0</span><span id="secUni">0</span>
             </div>
+          </div>
+          <div class="info-box">
+            <h3>Speed</h3>
+            <span id="speed" class="info-value">1x</span>
+          </div>
+          <div class="info-box">
+            <h3>High Score</h3>
+            <span id="highscore" class="info-value">--</span>
+          </div>
         </div>
-        <script type="text/javascript" src="chrono.js"></script>
-        <script type="text/javascript" src="checkOnRoad.js"></script>
-        <script type="text/javascript" src="balls.js"></script>
-        <script type="text/javascript" src="roads.js"></script>
-        <script type="text/javascript" src="index.js"></script>
-    </body>
+      </div>
+
+      <div id="gameover-overlay" class="hidden">
+        <div class="gameover-box">
+          <h2>Game Over!</h2>
+          <p>Tiempo: <span id="final-time"></span></p>
+          <p>Velocidad alcanzada: <span id="final-speed"></span></p>
+          <p id="new-record" class="hidden">Nuevo record!</p>
+          <button id="restart-btn">Jugar de nuevo</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="chrono.js"></script>
+    <script src="checkOnRoad.js"></script>
+    <script src="balls.js"></script>
+    <script src="roads.js"></script>
+    <script src="index.js"></script>
+  </body>
 </html>
