@@ -276,6 +276,11 @@ window.onload = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     instructionsOverlay.classList.remove("hidden");
     loadHighScore();
+
+    // Reset submit score form
+    document.getElementById("submit-score-btn").disabled = false;
+    document.getElementById("submit-score-btn").style.display = "";
+    document.getElementById("score-submitted").classList.add("hidden");
   }
 
   function togglePause() {
@@ -315,6 +320,43 @@ window.onload = () => {
   restartBtn.addEventListener("click", () => {
     resetGame();
   });
+
+  // Submit score to leaderboard
+  const submitScoreBtn = document.getElementById("submit-score-btn");
+  const playerNameInput = document.getElementById("player-name");
+  const scoreSubmittedEl = document.getElementById("score-submitted");
+
+  submitScoreBtn.addEventListener("click", async () => {
+    const name = playerNameInput.value.trim();
+    if (!name) {
+      playerNameInput.focus();
+      return;
+    }
+    submitScoreBtn.disabled = true;
+    const accuracy = totalFrames > 0 ? Math.round((framesOnRoad / totalFrames) * 100) : 0;
+    await submitScore(name, chronometer.currentTime, chronometer.getTimeString(), gameMode, accuracy);
+    scoreSubmittedEl.classList.remove("hidden");
+    submitScoreBtn.style.display = "none";
+    localStorage.setItem("drivertest-playername", name);
+  });
+
+  // Load saved player name
+  const savedName = localStorage.getItem("drivertest-playername");
+  if (savedName) playerNameInput.value = savedName;
+
+  // Leaderboard tabs
+  const lbTabs = document.querySelectorAll(".lb-tab");
+  lbTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      lbTabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      document.querySelectorAll(".lb-panel").forEach((p) => p.classList.add("hidden"));
+      document.getElementById("lb-panel-" + tab.dataset.mode).classList.remove("hidden");
+    });
+  });
+
+  // Init leaderboard
+  initLeaderboard();
 
   // Pause and prevent default for arrow keys
   window.addEventListener("keydown", (event) => {
