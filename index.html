@@ -51,7 +51,7 @@
     }
     </script>
 
-    <!-- Google Analytics placeholder - replace G-8943VFZJXK with your ID -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8943VFZJXK"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -67,38 +67,28 @@
         <p class="subtitle">Practica el psicotécnico para renovar tu carnet de conducir</p>
       </header>
 
-      <!-- Instructions overlay -->
-      <div id="instructions-overlay">
-        <div class="instructions-box">
-          <h2>Cómo jugar</h2>
-          <div class="instructions-content">
-            <div class="instruction-step">
-              <div class="instruction-icon">&#127959;</div>
-              <p>Mantén las dos bolas verdes <strong>dentro de la carretera amarilla</strong></p>
-            </div>
-            <div class="instruction-step">
-              <div class="instruction-icon">&#9000;</div>
-              <p>Bola izquierda: teclas <kbd>A</kbd> y <kbd>D</kbd></p>
-            </div>
-            <div class="instruction-step">
-              <div class="instruction-icon">&#10145;</div>
-              <p>Bola derecha: teclas <kbd>&larr;</kbd> y <kbd>&rarr;</kbd></p>
-            </div>
-            <div class="instruction-step">
-              <div class="instruction-icon">&#9208;</div>
-              <p><kbd>Espacio</kbd> para pausar</p>
-            </div>
+      <!-- Game controls bar (inline, no popup) -->
+      <section class="game-setup" id="game-setup">
+        <div class="controls-info">
+          <div class="instruction-row">
+            <span>Bola izquierda: <kbd>A</kbd> <kbd>D</kbd></span>
+            <span>Bola derecha: <kbd>&larr;</kbd> <kbd>&rarr;</kbd></span>
+            <span>Pausa: <kbd>Espacio</kbd></span>
           </div>
+          <p class="game-objective">Mantén las dos bolas verdes dentro de la carretera amarilla</p>
+        </div>
+        <div class="setup-row">
           <div class="mode-selector">
             <button id="mode-progressive" class="mode-btn active">Progresivo</button>
             <button id="mode-constant" class="mode-btn">Constante</button>
           </div>
-          <p class="mode-description" id="mode-desc">La velocidad aumenta cada 15 segundos</p>
           <button id="button">Comenzar</button>
         </div>
-      </div>
+        <p class="mode-description" id="mode-desc">La velocidad aumenta cada 15 segundos</p>
+      </section>
 
-      <div class="gameandinfo">
+      <!-- Game area -->
+      <div class="gameandinfo" id="game-area">
         <div class="canvas-wrapper">
           <canvas id="canvas" width="800" height="500"></canvas>
           <!-- Mobile touch controls -->
@@ -135,37 +125,35 @@
         </div>
       </div>
 
-      <!-- Game Over overlay with stats -->
-      <div id="gameover-overlay" class="hidden">
-        <div class="gameover-box">
-          <h2>Fin de la prueba</h2>
-          <div class="stats-grid">
-            <div class="stat">
-              <span class="stat-label">Tiempo</span>
-              <span class="stat-value" id="final-time"></span>
-            </div>
-            <div class="stat">
-              <span class="stat-label">Velocidad max.</span>
-              <span class="stat-value" id="final-speed"></span>
-            </div>
-            <div class="stat">
-              <span class="stat-label">Precisión</span>
-              <span class="stat-value" id="final-accuracy"></span>
-            </div>
-            <div class="stat">
-              <span class="stat-label">Mejor racha</span>
-              <span class="stat-value" id="final-streak"></span>
-            </div>
+      <!-- Game Over results (inline, replaces game setup) -->
+      <section class="game-results hidden" id="game-results">
+        <h2>Fin de la prueba</h2>
+        <div class="stats-grid">
+          <div class="stat">
+            <span class="stat-label">Tiempo</span>
+            <span class="stat-value" id="final-time"></span>
           </div>
-          <p id="new-record" class="hidden">Nuevo record!</p>
-          <div class="submit-score">
-            <input type="text" id="player-name" placeholder="Tu nombre" maxlength="15" />
-            <button id="submit-score-btn">Enviar puntuación</button>
+          <div class="stat">
+            <span class="stat-label">Velocidad max.</span>
+            <span class="stat-value" id="final-speed"></span>
           </div>
-          <p id="score-submitted" class="hidden">Puntuación enviada!</p>
-          <button id="restart-btn">Jugar de nuevo</button>
+          <div class="stat">
+            <span class="stat-label">Precisión</span>
+            <span class="stat-value" id="final-accuracy"></span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Mejor racha</span>
+            <span class="stat-value" id="final-streak"></span>
+          </div>
         </div>
-      </div>
+        <p id="new-record" class="hidden">Nuevo record!</p>
+        <div class="submit-score">
+          <input type="text" id="player-name" placeholder="Tu nombre" maxlength="15" />
+          <button id="submit-score-btn">Enviar puntuación</button>
+        </div>
+        <p id="score-submitted" class="hidden">Puntuación enviada!</p>
+        <button id="restart-btn">Volver a jugar</button>
+      </section>
 
       <!-- Leaderboard Section -->
       <section class="leaderboard-section">
