@@ -311,7 +311,7 @@ window.onload = () => {
     gameStarted = true;
     gameSetup.classList.add("hidden");
     gameResults.classList.add("hidden");
-    if (audioCtx.state === "suspended") audioCtx.resume();
+    if (typeof audioCtx !== "undefined" && audioCtx.state === "suspended") audioCtx.resume();
     chronometer.start();
     timerIntervalId = setInterval(updateTimer, 1000);
     canvas.scrollIntoView({ behavior: "smooth", block: "center" });

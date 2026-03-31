@@ -47,35 +47,11 @@ kbd {
 /* Game Setup Section (inline) */
 .game-setup {
   max-width: 800px;
-  margin: 0 auto 20px;
-  padding: 20px 28px;
-  background: #16213e;
-  border-radius: 12px;
-  border: 1px solid #253555;
+  margin: 0 auto 16px;
 }
 
 .game-setup.hidden {
   display: none;
-}
-
-.controls-info {
-  margin-bottom: 14px;
-}
-
-.instruction-row {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  font-size: 14px;
-  color: #aaa;
-  margin-bottom: 8px;
-}
-
-.game-objective {
-  font-size: 15px;
-  color: #00d2ff;
-  font-weight: 500;
 }
 
 .setup-row {
@@ -83,13 +59,18 @@ kbd {
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .mode-description {
   font-size: 13px;
   color: #888;
-  min-height: 18px;
+  margin-bottom: 4px;
+}
+
+.controls-hint {
+  font-size: 12px;
+  color: #666;
 }
 
 /* Game Results Section (inline) */
