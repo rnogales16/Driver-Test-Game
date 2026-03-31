@@ -29,6 +29,12 @@ h1 {
   margin-bottom: 10px;
 }
 
+.subtitle {
+  font-size: 18px;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
 .controls-info p {
   font-size: 15px;
   color: #aaa;
