@@ -44,6 +44,37 @@ kbd {
   font-family: inherit;
 }
 
+.mode-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.mode-btn {
+  padding: 8px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  border: 2px solid #3a7bd5;
+  border-radius: 8px;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mode-btn:hover:not(.active) {
+  color: #fff;
+  border-color: #00d2ff;
+}
+
 #button {
   width: 220px;
   height: 55px;

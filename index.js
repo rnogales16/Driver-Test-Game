@@ -14,6 +14,7 @@ window.onload = () => {
   let paused = false;
   let gameStarted = false;
   let gameOver = false;
+  let gameMode = "progressive";
   const MOVE_STEP = 2.5;
   const SPEED_INCREMENT = 0.3;
   const SPEED_INTERVAL_SEC = 15;
@@ -33,11 +34,32 @@ window.onload = () => {
   const newRecordEl = document.getElementById("new-record");
   const restartBtn = document.getElementById("restart-btn");
 
-  // Load high score
-  const savedHighScore = localStorage.getItem("drivertest-highscore");
-  if (savedHighScore) {
-    highscoreEl.innerText = savedHighScore;
+  const modeProgressiveBtn = document.getElementById("mode-progressive");
+  const modeConstantBtn = document.getElementById("mode-constant");
+
+  function loadHighScore() {
+    const key = "drivertest-highscore-" + gameMode;
+    const saved = localStorage.getItem(key);
+    highscoreEl.innerText = saved || "--";
   }
+
+  loadHighScore();
+
+  modeProgressiveBtn.addEventListener("click", () => {
+    if (gameStarted) return;
+    gameMode = "progressive";
+    modeProgressiveBtn.classList.add("active");
+    modeConstantBtn.classList.remove("active");
+    loadHighScore();
+  });
+
+  modeConstantBtn.addEventListener("click", () => {
+    if (gameStarted) return;
+    gameMode = "constant";
+    modeConstantBtn.classList.add("active");
+    modeProgressiveBtn.classList.remove("active");
+    loadHighScore();
+  });
 
   let currentSpeed = 1;
   let timerIntervalId = null;
@@ -97,6 +119,7 @@ window.onload = () => {
   }
 
   function checkSpeedUp() {
+    if (gameMode === "constant") return;
     const elapsed = chronometer.currentTime;
     const expectedSpeed = 1 + Math.floor(elapsed / SPEED_INTERVAL_SEC) * SPEED_INCREMENT;
     if (expectedSpeed !== currentSpeed) {
@@ -124,12 +147,14 @@ window.onload = () => {
     finalTimeEl.innerText = timeStr;
     finalSpeedEl.innerText = currentSpeed.toFixed(1) + "x";
 
-    // Check high score (by seconds survived)
-    const prevBest = parseInt(localStorage.getItem("drivertest-highscore-sec") || "0");
+    // Check high score (by seconds survived, per mode)
+    const secKey = "drivertest-highscore-sec-" + gameMode;
+    const strKey = "drivertest-highscore-" + gameMode;
+    const prevBest = parseInt(localStorage.getItem(secKey) || "0");
     const current = chronometer.currentTime;
     if (current > prevBest) {
-      localStorage.setItem("drivertest-highscore-sec", current);
-      localStorage.setItem("drivertest-highscore", timeStr);
+      localStorage.setItem(secKey, current);
+      localStorage.setItem(strKey, timeStr);
       highscoreEl.innerText = timeStr;
       newRecordEl.classList.remove("hidden");
     } else {
@@ -162,6 +187,8 @@ window.onload = () => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     startBtn.style.display = "";
+    document.querySelector(".mode-selector").style.display = "";
+    loadHighScore();
   }
 
   function togglePause() {
@@ -193,6 +220,7 @@ window.onload = () => {
     if (gameStarted) return;
     gameStarted = true;
     startBtn.style.display = "none";
+    document.querySelector(".mode-selector").style.display = "none";
     chronometer.start();
     timerIntervalId = setInterval(updateTimer, 1000);
     gameLoop();
