@@ -12,11 +12,10 @@ function initLeaderboard() {
 async function submitScore(name, seconds, timeStr, mode, accuracy) {
   if (!db) return;
   try {
-    await db.collection("leaderboard").add({
+    await db.collection(mode).add({
       name: name.substring(0, 15),
       seconds: seconds,
       time: timeStr,
-      mode: mode,
       accuracy: accuracy,
       date: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -33,8 +32,7 @@ async function loadLeaderboard() {
   for (const mode of modes) {
     try {
       const snapshot = await db
-        .collection("leaderboard")
-        .where("mode", "==", mode)
+        .collection(mode)
         .orderBy("seconds", "desc")
         .limit(10)
         .get();
