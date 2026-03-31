@@ -8,7 +8,6 @@ window.onload = () => {
   const leftBall = new Ball(ctx, 160, leftBallImg);
   const rightBall = new Ball(ctx, 568, rightBallImg);
 
-  // Slightly smaller balls
   leftBall.width = 60;
   leftBall.height = 60;
   rightBall.width = 60;
@@ -40,14 +39,14 @@ window.onload = () => {
   const secDecEl = document.getElementById("secDec");
   const secUniEl = document.getElementById("secUni");
   const startBtn = document.getElementById("button");
-  const overlay = document.getElementById("gameover-overlay");
+  const gameSetup = document.getElementById("game-setup");
+  const gameResults = document.getElementById("game-results");
   const finalTimeEl = document.getElementById("final-time");
   const finalSpeedEl = document.getElementById("final-speed");
   const finalAccuracyEl = document.getElementById("final-accuracy");
   const finalStreakEl = document.getElementById("final-streak");
   const newRecordEl = document.getElementById("new-record");
   const restartBtn = document.getElementById("restart-btn");
-  const instructionsOverlay = document.getElementById("instructions-overlay");
   const modeProgressiveBtn = document.getElementById("mode-progressive");
   const modeConstantBtn = document.getElementById("mode-constant");
   const modeDescEl = document.getElementById("mode-desc");
@@ -68,6 +67,7 @@ window.onload = () => {
   loadHighScore();
 
   modeProgressiveBtn.addEventListener("click", () => {
+    if (gameStarted) return;
     gameMode = "progressive";
     modeProgressiveBtn.classList.add("active");
     modeConstantBtn.classList.remove("active");
@@ -76,6 +76,7 @@ window.onload = () => {
   });
 
   modeConstantBtn.addEventListener("click", () => {
+    if (gameStarted) return;
     gameMode = "constant";
     modeConstantBtn.classList.add("active");
     modeProgressiveBtn.classList.remove("active");
@@ -111,7 +112,6 @@ window.onload = () => {
     touchBtns.forEach((btn) => {
       const ball = btn.dataset.ball;
       const dir = btn.dataset.dir;
-
       let touchInterval = null;
 
       function startMove() {
@@ -163,7 +163,6 @@ window.onload = () => {
     leftBall.draw();
     rightBall.draw();
 
-    // Track stats
     totalFrames++;
     const bothOnRoad = leftBall.onRoad && rightBall.onRoad;
     if (bothOnRoad) {
@@ -221,15 +220,12 @@ window.onload = () => {
     finalTimeEl.innerText = timeStr;
     finalSpeedEl.innerText = currentSpeed.toFixed(1) + "x";
 
-    // Accuracy
     const accuracy = totalFrames > 0 ? Math.round((framesOnRoad / totalFrames) * 100) : 0;
     finalAccuracyEl.innerText = accuracy + "%";
 
-    // Best streak in seconds (approx 60fps)
     const streakSec = (bestStreak / 60).toFixed(1);
     finalStreakEl.innerText = streakSec + "s";
 
-    // Check high score (by seconds survived, per mode)
     const secKey = "drivertest-highscore-sec-" + gameMode;
     const strKey = "drivertest-highscore-" + gameMode;
     const prevBest = parseInt(localStorage.getItem(secKey) || "0");
@@ -243,11 +239,14 @@ window.onload = () => {
       newRecordEl.classList.add("hidden");
     }
 
-    overlay.classList.remove("hidden");
+    // Show results section, scroll to it
+    gameResults.classList.remove("hidden");
+    gameResults.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
   function resetGame() {
-    overlay.classList.add("hidden");
+    gameResults.classList.add("hidden");
+    gameSetup.classList.remove("hidden");
     gameOver = false;
     paused = false;
     gameStarted = false;
@@ -262,7 +261,6 @@ window.onload = () => {
     leftRoad.y = 0;
     rightRoad.y = 0;
 
-    // Reset stats
     totalFrames = 0;
     framesOnRoad = 0;
     currentStreak = 0;
@@ -274,13 +272,14 @@ window.onload = () => {
     updateTimer();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    instructionsOverlay.classList.remove("hidden");
     loadHighScore();
 
     // Reset submit score form
     document.getElementById("submit-score-btn").disabled = false;
     document.getElementById("submit-score-btn").style.display = "";
     document.getElementById("score-submitted").classList.add("hidden");
+
+    gameSetup.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
   function togglePause() {
@@ -306,14 +305,16 @@ window.onload = () => {
     }
   }
 
-  // Start game from instructions overlay
+  // Start game
   startBtn.addEventListener("click", () => {
     if (gameStarted) return;
     gameStarted = true;
-    instructionsOverlay.classList.add("hidden");
+    gameSetup.classList.add("hidden");
+    gameResults.classList.add("hidden");
     if (audioCtx.state === "suspended") audioCtx.resume();
     chronometer.start();
     timerIntervalId = setInterval(updateTimer, 1000);
+    canvas.scrollIntoView({ behavior: "smooth", block: "center" });
     gameLoop();
   });
 
@@ -340,7 +341,6 @@ window.onload = () => {
     localStorage.setItem("drivertest-playername", name);
   });
 
-  // Load saved player name
   const savedName = localStorage.getItem("drivertest-playername");
   if (savedName) playerNameInput.value = savedName;
 
@@ -355,7 +355,6 @@ window.onload = () => {
     });
   });
 
-  // Init leaderboard
   initLeaderboard();
 
   // Pause and prevent default for arrow keys
