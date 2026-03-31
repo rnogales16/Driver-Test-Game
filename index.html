@@ -158,9 +158,45 @@
             </div>
           </div>
           <p id="new-record" class="hidden">Nuevo record!</p>
+          <div class="submit-score">
+            <input type="text" id="player-name" placeholder="Tu nombre" maxlength="15" />
+            <button id="submit-score-btn">Enviar puntuación</button>
+          </div>
+          <p id="score-submitted" class="hidden">Puntuación enviada!</p>
           <button id="restart-btn">Jugar de nuevo</button>
         </div>
       </div>
+
+      <!-- Leaderboard Section -->
+      <section class="leaderboard-section">
+        <h2>Ranking Global</h2>
+        <div class="lb-tabs">
+          <button class="lb-tab active" data-mode="progressive">Progresivo</button>
+          <button class="lb-tab" data-mode="constant">Constante</button>
+        </div>
+        <div class="lb-panel" id="lb-panel-progressive">
+          <div class="lb-header">
+            <span></span>
+            <span>Nombre</span>
+            <span>Tiempo</span>
+            <span>Precisión</span>
+          </div>
+          <ol id="lb-list-progressive" class="lb-list">
+            <li class="lb-empty">Cargando...</li>
+          </ol>
+        </div>
+        <div class="lb-panel hidden" id="lb-panel-constant">
+          <div class="lb-header">
+            <span></span>
+            <span>Nombre</span>
+            <span>Tiempo</span>
+            <span>Precisión</span>
+          </div>
+          <ol id="lb-list-constant" class="lb-list">
+            <li class="lb-empty">Cargando...</li>
+          </ol>
+        </div>
+      </section>
 
       <!-- SEO Content Section -->
       <section class="seo-content">
@@ -216,10 +252,16 @@
       </footer>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script src="chrono.js"></script>
     <script src="checkOnRoad.js"></script>
     <script src="balls.js"></script>
     <script src="roads.js"></script>
+    <script src="leaderboard.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
