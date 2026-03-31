@@ -26,19 +26,13 @@ h1 {
   background: linear-gradient(135deg, #00d2ff, #3a7bd5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .subtitle {
   font-size: 18px;
   color: #aaa;
   margin-bottom: 12px;
-}
-
-.controls-info p {
-  font-size: 15px;
-  color: #aaa;
-  margin-bottom: 16px;
 }
 
 kbd {
@@ -50,11 +44,73 @@ kbd {
   font-family: inherit;
 }
 
+/* Instructions Overlay */
+#instructions-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+#instructions-overlay.hidden {
+  display: none;
+}
+
+.instructions-box {
+  background: #16213e;
+  border: 2px solid #3a7bd5;
+  border-radius: 16px;
+  padding: 36px 44px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.instructions-box h2 {
+  font-size: 30px;
+  color: #00d2ff;
+  margin-bottom: 20px;
+}
+
+.instructions-content {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.instruction-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.instruction-icon {
+  font-size: 24px;
+  min-width: 36px;
+  text-align: center;
+}
+
+.instruction-step p {
+  font-size: 15px;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+.mode-description {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 20px;
+  min-height: 20px;
+}
+
+/* Mode Selector */
 .mode-selector {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 .mode-btn {
@@ -92,7 +148,6 @@ kbd {
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
-  margin-bottom: 20px;
 }
 
 #button:hover {
@@ -100,6 +155,7 @@ kbd {
   box-shadow: 0 4px 20px rgba(0, 210, 255, 0.4);
 }
 
+/* Game Layout */
 .gameandinfo {
   display: flex;
   justify-content: center;
@@ -107,10 +163,16 @@ kbd {
   align-items: flex-start;
 }
 
+.canvas-wrapper {
+  position: relative;
+}
+
 canvas {
   border: 3px solid #3a7bd5;
   border-radius: 8px;
   background-color: #0a0a1a;
+  max-width: 100%;
+  height: auto;
 }
 
 .sidebar {
@@ -155,7 +217,7 @@ canvas {
 #gameover-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,20 +232,45 @@ canvas {
   background: #16213e;
   border: 2px solid #3a7bd5;
   border-radius: 16px;
-  padding: 40px 50px;
+  padding: 36px 44px;
   text-align: center;
+  max-width: 460px;
+  width: 90%;
 }
 
 .gameover-box h2 {
-  font-size: 42px;
+  font-size: 36px;
   color: #ff4757;
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
   margin-bottom: 16px;
 }
 
-.gameover-box p {
-  font-size: 18px;
-  color: #ccc;
-  margin-bottom: 8px;
+.stat {
+  background: #1a1a2e;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #00d2ff;
 }
 
 #new-record {
@@ -198,7 +285,7 @@ canvas {
 }
 
 #restart-btn {
-  margin-top: 20px;
+  margin-top: 16px;
   padding: 12px 30px;
   font-size: 18px;
   font-weight: 700;
@@ -214,9 +301,202 @@ canvas {
   transform: scale(1.05);
 }
 
-/* Pause overlay text */
-.pause-text {
-  font-size: 60px;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.7);
+/* Touch Controls */
+.touch-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  gap: 20px;
+}
+
+.touch-controls.hidden {
+  display: none;
+}
+
+.touch-side {
+  display: flex;
+  gap: 10px;
+}
+
+.touch-btn {
+  width: 64px;
+  height: 64px;
+  font-size: 24px;
+  background: #16213e;
+  border: 2px solid #3a7bd5;
+  border-radius: 12px;
+  color: #00d2ff;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.touch-btn:active {
+  background: #3a7bd5;
+  color: #fff;
+}
+
+/* SEO Content Section */
+.seo-content {
+  text-align: left;
+  max-width: 800px;
+  margin: 60px auto 0;
+  padding: 40px;
+  background: #16213e;
+  border-radius: 16px;
+  border: 1px solid #253555;
+}
+
+.seo-content h2 {
+  font-size: 24px;
+  color: #00d2ff;
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+.seo-content h2:first-child {
+  margin-top: 0;
+}
+
+.seo-content p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #bbb;
+  margin-bottom: 12px;
+}
+
+.seo-content ul {
+  padding-left: 24px;
+  margin-bottom: 12px;
+}
+
+.seo-content li {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #bbb;
+  margin-bottom: 6px;
+}
+
+/* CTA Section */
+.cta-section {
+  max-width: 800px;
+  margin: 40px auto 0;
+  padding: 36px 40px;
+  background: linear-gradient(135deg, #1e3a5f, #16213e);
+  border-radius: 16px;
+  border: 1px solid #3a7bd5;
+}
+
+.cta-section h2 {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.cta-section p {
+  font-size: 16px;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.4);
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  padding: 24px 0;
+  border-top: 1px solid #253555;
+}
+
+footer p {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .gameandinfo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: auto;
+    gap: 8px;
+  }
+
+  .info-box {
+    min-width: 100px;
+    padding: 8px 12px;
+  }
+
+  .info-value {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .seo-content,
+  .cta-section {
+    padding: 24px 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .seo-content h2,
+  .cta-section h2 {
+    font-size: 20px;
+  }
+
+  .seo-content p,
+  .seo-content li,
+  .cta-section p {
+    font-size: 14px;
+  }
+
+  .instructions-box {
+    padding: 24px 20px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .touch-controls {
+    justify-content: center;
+  }
+
+  .touch-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
 }
