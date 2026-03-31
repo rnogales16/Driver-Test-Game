@@ -5,15 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="game.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
     <title>PsicoCarnet - Practica el psicotécnico para renovar tu carnet de conducir</title>
     <meta name="description" content="Simulador gratuito del test psicomotriz para renovar o sacarte el carnet de conducir en España. Practica la prueba de coordinación y reflejos del psicotécnico." />
-    <meta name="keywords" content="psicotécnico, carnet de conducir, renovar carnet, test psicomotriz, prueba psicotécnica, DGT, coordinación, reflejos, simulador psicotécnico" />
+    <meta name="keywords" content="psicotécnico, carnet de conducir, renovar carnet, test psicomotriz, prueba psicotécnica, DGT, coordinación, reflejos, simulador psicotécnico, centro médico carnet" />
     <meta name="author" content="PsicoCarnet" />
     <link rel="canonical" href="https://psicocarnet.com/" />
 
@@ -23,56 +22,198 @@
     <meta property="og:url" content="https://psicocarnet.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="https://psicocarnet.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PsicoCarnet - Simulador del psicotécnico" />
+    <meta name="twitter:description" content="Practica gratis la prueba de coordinación y reflejos del psicotécnico para renovar tu carnet." />
+    <meta name="twitter:image" content="https://psicocarnet.com/og-image.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PsicoCarnet",
+      "url": "https://psicocarnet.com",
+      "description": "Simulador gratuito del test psicomotriz para renovar o sacarte el carnet de conducir en España.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "inLanguage": "es"
+    }
+    </script>
+
+    <!-- Google Analytics placeholder - replace G-XXXXXXXXXX with your ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
   </head>
   <body>
     <div class="everything">
-      <h1>PsicoCarnet</h1>
-      <p class="subtitle">Practica el psicotécnico para renovar tu carnet de conducir</p>
-      <div class="controls-info">
-        <p>
-          Usa <kbd>A</kbd> y <kbd>D</kbd> para la bola izquierda |
-          <kbd>&larr;</kbd> <kbd>&rarr;</kbd> para la derecha |
-          <kbd>Space</kbd> para pausar
-        </p>
+      <header>
+        <h1>PsicoCarnet</h1>
+        <p class="subtitle">Practica el psicotécnico para renovar tu carnet de conducir</p>
+      </header>
+
+      <!-- Instructions overlay -->
+      <div id="instructions-overlay">
+        <div class="instructions-box">
+          <h2>Cómo jugar</h2>
+          <div class="instructions-content">
+            <div class="instruction-step">
+              <div class="instruction-icon">&#127959;</div>
+              <p>Mantén las dos bolas verdes <strong>dentro de la carretera amarilla</strong></p>
+            </div>
+            <div class="instruction-step">
+              <div class="instruction-icon">&#9000;</div>
+              <p>Bola izquierda: teclas <kbd>A</kbd> y <kbd>D</kbd></p>
+            </div>
+            <div class="instruction-step">
+              <div class="instruction-icon">&#10145;</div>
+              <p>Bola derecha: teclas <kbd>&larr;</kbd> y <kbd>&rarr;</kbd></p>
+            </div>
+            <div class="instruction-step">
+              <div class="instruction-icon">&#9208;</div>
+              <p><kbd>Espacio</kbd> para pausar</p>
+            </div>
+          </div>
+          <div class="mode-selector">
+            <button id="mode-progressive" class="mode-btn active">Progresivo</button>
+            <button id="mode-constant" class="mode-btn">Constante</button>
+          </div>
+          <p class="mode-description" id="mode-desc">La velocidad aumenta cada 15 segundos</p>
+          <button id="button">Comenzar</button>
+        </div>
       </div>
-      <div class="mode-selector">
-        <button id="mode-progressive" class="mode-btn active">Progressive</button>
-        <button id="mode-constant" class="mode-btn">Constant</button>
-      </div>
-      <button id="button">Start Test</button>
+
       <div class="gameandinfo">
-        <canvas id="canvas" width="800" height="500"></canvas>
+        <div class="canvas-wrapper">
+          <canvas id="canvas" width="800" height="500"></canvas>
+          <!-- Mobile touch controls -->
+          <div id="touch-controls" class="touch-controls hidden">
+            <div class="touch-side touch-left">
+              <button class="touch-btn" data-ball="left" data-dir="left">&#9664;</button>
+              <button class="touch-btn" data-ball="left" data-dir="right">&#9654;</button>
+            </div>
+            <div class="touch-side touch-right">
+              <button class="touch-btn" data-ball="right" data-dir="left">&#9664;</button>
+              <button class="touch-btn" data-ball="right" data-dir="right">&#9654;</button>
+            </div>
+          </div>
+        </div>
         <div class="sidebar">
           <div class="info-box">
-            <h3>Lives</h3>
+            <h3>Vidas</h3>
             <span id="lives" class="info-value">5000</span>
           </div>
           <div class="info-box">
-            <h3>Time</h3>
+            <h3>Tiempo</h3>
             <div id="timer" class="info-value">
               <span id="minDec">0</span><span id="minUni">0</span><span class="separator">:</span><span id="secDec">0</span><span id="secUni">0</span>
             </div>
           </div>
           <div class="info-box">
-            <h3>Speed</h3>
+            <h3>Velocidad</h3>
             <span id="speed" class="info-value">1x</span>
           </div>
           <div class="info-box">
-            <h3>High Score</h3>
+            <h3>Mejor tiempo</h3>
             <span id="highscore" class="info-value">--</span>
           </div>
         </div>
       </div>
 
+      <!-- Game Over overlay with stats -->
       <div id="gameover-overlay" class="hidden">
         <div class="gameover-box">
-          <h2>Game Over!</h2>
-          <p>Tiempo: <span id="final-time"></span></p>
-          <p>Velocidad alcanzada: <span id="final-speed"></span></p>
+          <h2>Fin de la prueba</h2>
+          <div class="stats-grid">
+            <div class="stat">
+              <span class="stat-label">Tiempo</span>
+              <span class="stat-value" id="final-time"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Velocidad max.</span>
+              <span class="stat-value" id="final-speed"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Precisión</span>
+              <span class="stat-value" id="final-accuracy"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Mejor racha</span>
+              <span class="stat-value" id="final-streak"></span>
+            </div>
+          </div>
           <p id="new-record" class="hidden">Nuevo record!</p>
           <button id="restart-btn">Jugar de nuevo</button>
         </div>
       </div>
+
+      <!-- SEO Content Section -->
+      <section class="seo-content">
+        <h2>¿Qué es el test psicotécnico del carnet de conducir?</h2>
+        <p>
+          El <strong>psicotécnico</strong> es una prueba médica obligatoria en España para obtener o
+          <strong>renovar el carnet de conducir</strong>. Se realiza en un
+          <strong>Centro de Reconocimiento de Conductores (CRC)</strong> y evalúa tus capacidades
+          psicofísicas: coordinación, reflejos, percepción y atención.
+        </p>
+        <p>
+          Una de las pruebas más conocidas consiste en mantener dos objetos dentro de un recorrido
+          que se mueve, utilizando ambas manos de forma simultánea. Esta prueba mide tu
+          <strong>coordinación bimanual</strong> y tu <strong>capacidad de reacción</strong>.
+        </p>
+
+        <h2>¿Cada cuánto hay que renovar el carnet?</h2>
+        <p>
+          En España, el carnet de conducir se renueva cada <strong>10 años hasta los 65 años</strong>,
+          y cada <strong>5 años a partir de los 65</strong>. En cada renovación es obligatorio pasar
+          el reconocimiento psicotécnico en un centro autorizado por la DGT.
+        </p>
+
+        <h2>¿Cómo te ayuda PsicoCarnet?</h2>
+        <p>
+          PsicoCarnet es un <strong>simulador gratuito</strong> que reproduce la prueba de coordinación
+          del psicotécnico. Puedes practicar desde casa para llegar con más confianza al centro médico.
+          Elige el modo <strong>constante</strong> para practicar a tu ritmo, o el modo
+          <strong>progresivo</strong> para un desafío creciente.
+        </p>
+
+        <h2>Consejos para pasar el psicotécnico</h2>
+        <ul>
+          <li>Descansa bien la noche anterior a la prueba</li>
+          <li>Evita el consumo de alcohol o sustancias que afecten a tus reflejos</li>
+          <li>Si usas gafas o lentillas, llévalas puestas</li>
+          <li>Practica la coordinación bimanual con ejercicios como este simulador</li>
+          <li>Ve relajado: los nervios pueden afectar a tu rendimiento</li>
+        </ul>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <h2>¿Necesitas renovar tu carnet?</h2>
+        <p>Encuentra tu Centro de Reconocimiento de Conductores (CRC) más cercano autorizado por la DGT.</p>
+        <a href="https://sede.dgt.gob.es/es/permisos-de-conducir/obtencion-renovacion-duplicados-permisos/renovacion-permiso-conduccion/" target="_blank" rel="noopener noreferrer" class="cta-btn">
+          Buscar centro de renovación en la DGT
+        </a>
+      </section>
+
+      <footer>
+        <p>&copy; 2026 PsicoCarnet. Simulador de pruebas psicotécnicas para el carnet de conducir.</p>
+      </footer>
     </div>
 
     <script src="chrono.js"></script>
