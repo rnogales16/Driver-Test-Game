@@ -171,6 +171,9 @@ window.onload = () => {
       chronometer.stop();
       clearInterval(timerIntervalId);
       stopBeep();
+      offRoadCount = 0;
+      leftBall.onRoad = true;
+      rightBall.onRoad = true;
       // Draw pause text
       ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
