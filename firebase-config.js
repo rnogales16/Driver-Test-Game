@@ -1,11 +1,11 @@
-// Replace with your Firebase config from Firebase Console
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyC_DZLxbGMY3zTjxYfe-DEVC62kSOLjHXY",
+  authDomain: "psicocarnet.firebaseapp.com",
+  projectId: "psicocarnet",
+  storageBucket: "psicocarnet.firebasestorage.app",
+  messagingSenderId: "708734400810",
+  appId: "1:708734400810:web:75618be57fa74c4a4d4653",
+  measurementId: "G-8943VFZJXK"
 };
 
 firebase.initializeApp(firebaseConfig);
