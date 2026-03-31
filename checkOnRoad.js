@@ -1,11 +1,8 @@
 //Midpoint circle algorithm
 //http://en.wikipedia.org/wiki/Midpoint_circle_algorithm
 
-function isRoadColor([r,g,b,a]) {
-  //console.log(r,g,b,a)
-  //const [R, G, B, A] = [255,	251,	0, 255]
-  //return r === R && g === G && b === B && a ===A
-  return !(r+g+b+a === 0)
+function isRoadColor([r, g, b, a]) {
+  return r > 200 && g > 200 && b < 100 && a > 200;
 }
 
 function getPixelColor(xP, yP, width, imageData){
@@ -20,8 +17,9 @@ function getPixelColor(xP, yP, width, imageData){
 function isOnRoad(ctx, x0, y0, width=70) {
   const diameter = width + 4
   const radius = Math.round(diameter / 2)
-  const xS = x0 - 2 
+  const xS = x0 - 2
   const yS = y0 - 2
+
   const imageData = ctx.getImageData(xS, yS, diameter, diameter).data
 
   let xI = radius;
