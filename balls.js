@@ -1,62 +1,31 @@
 const leftBallImg = document.createElement("img");
 leftBallImg.src = "./images/Circulo_verde.png";
-console.log(leftBallImg);
 
-const rightBall = document.createElement("img");
-rightBall.src = "./images/Circulo_verde.png";
+const rightBallImg = document.createElement("img");
+rightBallImg.src = "./images/Circulo_verde.png";
 
+const musicBeep = new Audio("./images/beep.mov");
 
-let musicBeep = new Audio("./images/beep.mov")
-
-
-class bolaizquierda {
-  constructor(canvasContext, positionX, ball) {
+class Ball {
+  constructor(canvasContext, positionX, image) {
     this.ctx = canvasContext;
     this.x = positionX;
     this.y = 90;
     this.width = 70;
     this.height = 70;
-    this.image = ball;
+    this.image = image;
     this.lives = 500;
   }
 
   draw() {
-    this.ctx.drawImage(leftBallImg, this.x, this.y, this.width, this.height);
+    this.ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 
-  position(){
-    console.log(this.lives);
+  checkPosition() {
     if (!isOnRoad(this.ctx, this.x, this.y, this.width)) {
       this.lives -= 1;
-      musicBeep.volume = 0.5;
-      musicBeep.balance = -1;
-      musicBeep.play();
-    }
-  }
-}
-
-class boladerecha {
-  constructor(canvasContext, positionX, ball) {
-    this.ctx = canvasContext;
-    this.x = positionX;
-    this.y = 90;
-    this.width = 70;
-    this.height = 70;
-    this.image = ball;
-    this.lives = 500;
-  }
-
-  draw() {
-    this.ctx.drawImage(rightBall, this.x, this.y, this.width, this.height);
-  }
-
-  position(){
-    console.log(this.lives);
-    if (!isOnRoad(this.ctx, this.x, this.y, this.width)) {
-      this.lives -= 1;
-      musicBeep.volume = 0.5;
-      musicBeep.balance = -1;
-      musicBeep.play();
+      musicBeep.volume = 0.3;
+      musicBeep.play().catch(() => {});
     }
   }
 }

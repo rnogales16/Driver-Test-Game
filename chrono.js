@@ -4,26 +4,37 @@ class Chronometer {
     this.intervalId = null;
   }
 
-  start(callback) {
+  start() {
     this.intervalId = setInterval(() => {
       this.currentTime += 1;
-    }, 1000)
+    }, 1000);
+  }
+
+  stop() {
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+  }
+
+  reset() {
+    this.stop();
+    this.currentTime = 0;
   }
 
   getMinutes() {
-    return Math.floor(this.currentTime/60);
+    return Math.floor(this.currentTime / 60);
   }
 
   getSeconds() {
     return this.currentTime % 60;
   }
 
+  getTimeString() {
+    const min = String(this.getMinutes()).padStart(2, "0");
+    const sec = String(this.getSeconds()).padStart(2, "0");
+    return `${min}:${sec}`;
+  }
+
   computeTwoDigitNumber(value) {
-    if(value.toString().length == 1){
-      value = "0" + value.toString();
-    }else if(value.toString().length == 2) {
-      value = value.toString();
-    }
-    return value;
+    return String(value).padStart(2, "0");
   }
 }
