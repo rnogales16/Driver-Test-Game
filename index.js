@@ -114,6 +114,7 @@ window.onload = () => {
       cancelAnimationFrame(frameId);
       chronometer.stop();
       clearInterval(timerIntervalId);
+      stopBeep();
       showGameOver();
     }
   }
@@ -169,6 +170,7 @@ window.onload = () => {
     if (paused) {
       chronometer.stop();
       clearInterval(timerIntervalId);
+      stopBeep();
       // Draw pause text
       ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
