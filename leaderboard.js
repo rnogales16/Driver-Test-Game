@@ -1,18 +1,19 @@
-// Firebase imports (compat mode for CDN)
-// Config is set in index.html before this script loads
-
 let db = null;
 
 function initLeaderboard() {
   if (!window.firebase || !firebase.apps.length) return;
-  db = firebase.firestore();
-  loadLeaderboard();
+  try {
+    db = firebase.firestore();
+    loadLeaderboard();
+  } catch (e) {
+    console.error("Firebase init error:", e);
+  }
 }
 
 async function submitScore(name, seconds, timeStr, mode, accuracy) {
-  if (!db) return;
+  if (!db || seconds <= 0) return;
   try {
-    await db.collection(mode).add({
+    await db.collection("scores_" + mode).add({
       name: name.substring(0, 15),
       seconds: seconds,
       time: timeStr,
@@ -30,15 +31,15 @@ async function loadLeaderboard() {
 
   const modes = ["progressive", "constant"];
   for (const mode of modes) {
+    const list = document.getElementById("lb-list-" + mode);
+    if (!list) continue;
+
     try {
       const snapshot = await db
-        .collection(mode)
+        .collection("scores_" + mode)
         .orderBy("seconds", "desc")
         .limit(10)
         .get();
-
-      const list = document.getElementById("lb-list-" + mode);
-      if (!list) continue;
 
       list.innerHTML = "";
 
@@ -64,6 +65,7 @@ async function loadLeaderboard() {
       });
     } catch (e) {
       console.error("Error loading leaderboard:", e);
+      list.innerHTML = '<li class="lb-empty">Error al cargar</li>';
     }
   }
 }
