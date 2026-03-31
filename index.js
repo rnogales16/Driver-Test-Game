@@ -171,8 +171,8 @@ window.onload = () => {
     gameStarted = false;
     currentSpeed = 1;
 
-    leftBall.lives = 5000;
-    rightBall.lives = 5000;
+    leftBall.lives = 2500;
+    rightBall.lives = 2500;
     leftBall.x = 160;
     rightBall.x = 568;
     leftRoad.setSpeed(1);
@@ -181,7 +181,7 @@ window.onload = () => {
     rightRoad.y = 0;
 
     chronometer.reset();
-    livesEl.innerText = "10000";
+    livesEl.innerText = "5000";
     speedEl.innerText = "1x";
     updateTimer();
 
