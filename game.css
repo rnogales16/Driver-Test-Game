@@ -548,6 +548,14 @@ canvas {
   box-shadow: 0 4px 20px rgba(0, 210, 255, 0.4);
 }
 
+/* Ad containers */
+.ad-container {
+  max-width: 800px;
+  margin: 30px auto;
+  min-height: 90px;
+  text-align: center;
+}
+
 /* Footer */
 footer {
   margin-top: 40px;
