@@ -51,7 +51,7 @@ kbd {
 }
 
 .game-setup.hidden {
-  display: none;
+  visibility: hidden;
 }
 
 .setup-row {
