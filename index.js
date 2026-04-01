@@ -242,12 +242,15 @@ window.onload = () => {
 
     // Show results section, scroll to it
     gameResults.classList.remove("hidden");
+    startBtn.innerText = "Comenzar";
     gameResults.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
   function resetGame() {
     gameResults.classList.add("hidden");
-    gameSetup.classList.remove("hidden");
+    startBtn.innerText = "Comenzar";
+    modeProgressiveBtn.disabled = false;
+    modeConstantBtn.disabled = false;
     gameOver = false;
     paused = false;
     gameStarted = false;
@@ -300,24 +303,32 @@ window.onload = () => {
       ctx.font = "bold 60px Roboto, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("PAUSA", canvas.width / 2, canvas.height / 2);
+      startBtn.innerText = "Reanudar";
     } else {
       chronometer.start();
       timerIntervalId = setInterval(updateTimer, 1000);
+      startBtn.innerText = "Pausa";
       gameLoop();
     }
   }
 
-  // Start game
+  // Start / Pause button
   startBtn.addEventListener("click", () => {
-    if (gameStarted) return;
-    gameStarted = true;
-    gameSetup.classList.add("hidden");
-    gameResults.classList.add("hidden");
-    if (typeof audioCtx !== "undefined" && audioCtx.state === "suspended") audioCtx.resume();
-    chronometer.start();
-    timerIntervalId = setInterval(updateTimer, 1000);
-    canvas.scrollIntoView({ behavior: "smooth", block: "center" });
-    gameLoop();
+    if (!gameStarted) {
+      gameStarted = true;
+      gameResults.classList.add("hidden");
+      startBtn.innerText = "Pausa";
+      modeProgressiveBtn.disabled = true;
+      modeConstantBtn.disabled = true;
+      if (typeof audioCtx !== "undefined" && audioCtx.state === "suspended") audioCtx.resume();
+      chronometer.start();
+      timerIntervalId = setInterval(updateTimer, 1000);
+      canvas.scrollIntoView({ behavior: "smooth", block: "center" });
+      gameLoop();
+    } else {
+      togglePause();
+      startBtn.innerText = paused ? "Reanudar" : "Pausa";
+    }
   });
 
   restartBtn.addEventListener("click", () => {

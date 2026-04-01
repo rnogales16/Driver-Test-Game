@@ -50,8 +50,14 @@ kbd {
   margin: 0 auto 16px;
 }
 
-.game-setup.hidden {
-  visibility: hidden;
+.mode-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.mode-btn:disabled:hover {
+  color: #aaa;
+  border-color: #3a7bd5;
 }
 
 .setup-row {
