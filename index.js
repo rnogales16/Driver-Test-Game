@@ -151,7 +151,8 @@ window.onload = () => {
     frameId = requestAnimationFrame(gameLoop);
 
     moveBalls();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#0a0a1a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     leftRoad.move();
     leftRoad.draw();
@@ -271,7 +272,8 @@ window.onload = () => {
     speedEl.innerText = "1x";
     updateTimer();
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#0a0a1a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     loadHighScore();
 
     // Reset submit score form
