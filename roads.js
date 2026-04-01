@@ -1,8 +1,8 @@
 const leftRoadImg = document.createElement("img");
-leftRoadImg.src = "./images/left-road-image.png";
+leftRoadImg.src = "./images/left-road-image.svg";
 
 const rightRoadImg = document.createElement("img");
-rightRoadImg.src = "./images/right-road-image.png";
+rightRoadImg.src = "./images/right-road-image.svg";
 
 class Road {
   constructor(canvasContext, image, startPositionX = 0, speed = 1) {
@@ -11,7 +11,7 @@ class Road {
     this.x = startPositionX;
     this.y = 0;
     this.width = 400;
-    this.height = 2000;
+    this.height = 1800;
     this.speed = speed;
   }
 
