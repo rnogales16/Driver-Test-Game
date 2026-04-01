@@ -44,59 +44,50 @@ kbd {
   font-family: inherit;
 }
 
-/* Game Setup Section (inline) */
-.game-setup {
-  max-width: 800px;
-  margin: 0 auto 16px;
+/* Canvas Overlays (start screen & game over) */
+.canvas-wrapper {
+  position: relative;
 }
 
-.mode-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.mode-btn:disabled:hover {
-  color: #aaa;
-  border-color: #3a7bd5;
-}
-
-.setup-row {
+.canvas-overlay {
+  position: absolute;
+  inset: 3px;
+  border-radius: 6px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 6px;
+  gap: 10px;
+  background: rgba(10, 10, 26, 0.85);
+  z-index: 10;
 }
 
-.mode-description {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.controls-hint {
-  font-size: 12px;
-  color: #666;
-}
-
-/* Game Results Section (inline) */
-.game-results {
-  max-width: 800px;
-  margin: 0 auto 20px;
-  padding: 28px 32px;
-  background: #16213e;
-  border-radius: 12px;
-  border: 1px solid #3a7bd5;
-}
-
-.game-results.hidden {
+.canvas-overlay.hidden {
   display: none;
 }
 
-.game-results h2 {
+.overlay-instruction {
+  font-size: 17px;
+  color: #00d2ff;
+  font-weight: 500;
+}
+
+.overlay-controls {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.mode-description {
+  font-size: 12px;
+  color: #888;
+}
+
+.gameover-title {
   font-size: 28px;
   color: #ff4757;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
 /* Mode Selector */

@@ -39,8 +39,8 @@ window.onload = () => {
   const secDecEl = document.getElementById("secDec");
   const secUniEl = document.getElementById("secUni");
   const startBtn = document.getElementById("button");
-  const gameSetup = document.getElementById("game-setup");
-  const gameResults = document.getElementById("game-results");
+  const canvasStart = document.getElementById("canvas-start");
+  const canvasGameover = document.getElementById("canvas-gameover");
   const finalTimeEl = document.getElementById("final-time");
   const finalSpeedEl = document.getElementById("final-speed");
   const finalAccuracyEl = document.getElementById("final-accuracy");
@@ -241,16 +241,12 @@ window.onload = () => {
     }
 
     // Show results section, scroll to it
-    gameResults.classList.remove("hidden");
-    startBtn.innerText = "Comenzar";
-    gameResults.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    canvasGameover.classList.remove("hidden");
   }
 
   function resetGame() {
-    gameResults.classList.add("hidden");
-    startBtn.innerText = "Comenzar";
-    modeProgressiveBtn.disabled = false;
-    modeConstantBtn.disabled = false;
+    canvasGameover.classList.add("hidden");
+    canvasStart.classList.remove("hidden");
     gameOver = false;
     paused = false;
     gameStarted = false;
@@ -303,11 +299,9 @@ window.onload = () => {
       ctx.font = "bold 60px Roboto, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("PAUSA", canvas.width / 2, canvas.height / 2);
-      startBtn.innerText = "Reanudar";
     } else {
       chronometer.start();
       timerIntervalId = setInterval(updateTimer, 1000);
-      startBtn.innerText = "Pausa";
       gameLoop();
     }
   }
@@ -316,18 +310,13 @@ window.onload = () => {
   startBtn.addEventListener("click", () => {
     if (!gameStarted) {
       gameStarted = true;
-      gameResults.classList.add("hidden");
-      startBtn.innerText = "Pausa";
-      modeProgressiveBtn.disabled = true;
-      modeConstantBtn.disabled = true;
+      canvasStart.classList.add("hidden");
+      canvasGameover.classList.add("hidden");
       if (typeof audioCtx !== "undefined" && audioCtx.state === "suspended") audioCtx.resume();
       chronometer.start();
       timerIntervalId = setInterval(updateTimer, 1000);
       canvas.scrollIntoView({ behavior: "smooth", block: "center" });
       gameLoop();
-    } else {
-      togglePause();
-      startBtn.innerText = paused ? "Reanudar" : "Pausa";
     }
   });
 
