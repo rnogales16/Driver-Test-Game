@@ -29,6 +29,7 @@ window.onload = () => {
   let framesOnRoad = 0;
   let currentStreak = 0;
   let bestStreak = 0;
+  const GRACE_FRAMES = 120; // ~2 seconds at 60fps
 
   // DOM elements
   const livesEl = document.getElementById("lives");
@@ -159,8 +160,10 @@ window.onload = () => {
     rightRoad.move();
     rightRoad.draw();
 
-    leftBall.checkPosition();
-    rightBall.checkPosition();
+    if (totalFrames >= GRACE_FRAMES) {
+      leftBall.checkPosition();
+      rightBall.checkPosition();
+    }
     leftBall.draw();
     rightBall.draw();
 
