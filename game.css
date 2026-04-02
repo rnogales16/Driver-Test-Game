@@ -149,9 +149,9 @@ kbd {
 /* Game Layout */
 .gameandinfo {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .canvas-wrapper {
@@ -165,19 +165,19 @@ canvas {
   display: block;
 }
 
-.sidebar {
+.stats-bar {
   display: flex;
-  flex-direction: column;
   gap: 12px;
-  min-width: 140px;
+  justify-content: center;
 }
 
 .info-box {
   background: #16213e;
   border: 1px solid #3a7bd5;
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 8px 20px;
   text-align: center;
+  min-width: 120px;
 }
 
 .info-box h3 {
@@ -572,22 +572,13 @@ footer p {
 
 /* Responsive */
 @media (max-width: 900px) {
-  .gameandinfo {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .sidebar {
-    flex-direction: row;
+  .stats-bar {
     flex-wrap: wrap;
-    justify-content: center;
-    min-width: auto;
-    gap: 8px;
   }
 
   .info-box {
-    min-width: 100px;
-    padding: 8px 12px;
+    min-width: 90px;
+    padding: 6px 12px;
   }
 
   .info-value {
