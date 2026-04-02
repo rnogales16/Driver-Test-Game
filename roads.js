@@ -16,8 +16,9 @@ class Road {
   }
 
   draw() {
-    this.ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-    this.ctx.drawImage(this.image, this.x, this.y + this.height, this.width, this.height);
+    const ry = Math.round(this.y);
+    this.ctx.drawImage(this.image, this.x, ry, this.width, this.height);
+    this.ctx.drawImage(this.image, this.x, ry + this.height, this.width, this.height);
   }
 
   move() {
