@@ -115,14 +115,28 @@ kbd {
   justify-content: center;
   align-items: center;
   background: #0a0a1a;
-  padding: 20px;
+}
+
+.gameandinfo:fullscreen .canvas-wrapper,
+.gameandinfo:-webkit-full-screen .canvas-wrapper {
+  width: auto;
+  height: auto;
 }
 
 .gameandinfo:fullscreen canvas,
 .gameandinfo:-webkit-full-screen canvas {
-  width: auto;
-  height: 80vh;
-  max-width: 95vw;
+  width: min(95vw, calc(85vh * 1.6));
+  height: min(85vh, calc(95vw / 1.6));
+}
+
+.gameandinfo:fullscreen .canvas-overlay,
+.gameandinfo:-webkit-full-screen .canvas-overlay {
+  inset: 3px;
+}
+
+.gameandinfo:fullscreen .stats-bar,
+.gameandinfo:-webkit-full-screen .stats-bar {
+  margin-top: 12px;
 }
 
 .gameandinfo:fullscreen .fullscreen-btn,
