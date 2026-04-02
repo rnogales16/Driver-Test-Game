@@ -359,6 +359,24 @@ window.onload = () => {
 
   initLeaderboard();
 
+  // Fullscreen
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
+  const canvasWrapper = document.querySelector(".canvas-wrapper");
+
+  fullscreenBtn.addEventListener("click", () => {
+    if (canvasWrapper.requestFullscreen) {
+      canvasWrapper.requestFullscreen();
+    } else if (canvasWrapper.webkitRequestFullscreen) {
+      canvasWrapper.webkitRequestFullscreen();
+    }
+  });
+
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+      // Exited fullscreen — ESC also toggles pause via keydown, so handle it
+    }
+  });
+
   // Pause and prevent default for arrow keys
   window.addEventListener("keydown", (event) => {
     if (event.code === "Space") {

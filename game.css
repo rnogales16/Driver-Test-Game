@@ -90,6 +90,47 @@ kbd {
   color: #888;
 }
 
+.start-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.fullscreen-btn {
+  width: 55px;
+  height: 55px;
+  font-size: 24px;
+  background: rgba(58, 123, 213, 0.3);
+  border: 2px solid #3a7bd5;
+  border-radius: 12px;
+  color: #00d2ff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.fullscreen-btn:hover {
+  background: rgba(58, 123, 213, 0.6);
+}
+
+/* Fullscreen mode */
+.canvas-wrapper:fullscreen,
+.canvas-wrapper:-webkit-full-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #0a0a1a;
+  width: 100vw;
+  height: 100vh;
+}
+
+.canvas-wrapper:fullscreen canvas,
+.canvas-wrapper:-webkit-full-screen canvas {
+  width: auto;
+  height: 90vh;
+  max-width: 100vw;
+}
+
 .gameover-title {
   font-size: 28px;
   color: #ff4757;
