@@ -11,7 +11,7 @@ class Road {
     this.x = startPositionX;
     this.y = 0;
     this.width = 400;
-    this.height = 1800;
+    this.height = 2000;
     this.speed = speed;
   }
 
