@@ -361,19 +361,13 @@ window.onload = () => {
 
   // Fullscreen
   const fullscreenBtn = document.getElementById("fullscreen-btn");
-  const canvasWrapper = document.querySelector(".canvas-wrapper");
+  const gameArea = document.getElementById("game-area");
 
   fullscreenBtn.addEventListener("click", () => {
-    if (canvasWrapper.requestFullscreen) {
-      canvasWrapper.requestFullscreen();
-    } else if (canvasWrapper.webkitRequestFullscreen) {
-      canvasWrapper.webkitRequestFullscreen();
-    }
-  });
-
-  document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement) {
-      // Exited fullscreen — ESC also toggles pause via keydown, so handle it
+    if (gameArea.requestFullscreen) {
+      gameArea.requestFullscreen();
+    } else if (gameArea.webkitRequestFullscreen) {
+      gameArea.webkitRequestFullscreen();
     }
   });
 
