@@ -8,7 +8,10 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link rel="preload" href="images/left-road-image.svg" as="image" />
+    <link rel="preload" href="images/right-road-image.svg" as="image" />
+    <link rel="preload" href="images/Circulo_verde.png" as="image" />
 
     <title>PsicoCarnet - Practica el psicotécnico para renovar tu carnet de conducir</title>
     <meta name="description" content="Simulador gratuito del psicotécnico para renovar el carnet de conducir en España. Practica online la prueba de coordinación bimanual y reflejos del reconocimiento médico de la DGT." />
@@ -146,6 +149,30 @@
             "@type": "Answer",
             "text": "No es posible renovar el carnet de conducir completamente online porque es obligatorio pasar el reconocimiento médico presencial en un Centro de Reconocimiento de Conductores. Sin embargo, puedes iniciar el trámite online a través de la sede electrónica de la DGT y luego acudir al centro médico autorizado."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo conducir con el carnet caducado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Conducir con el carnet caducado es una infracción grave sancionada con hasta 200€ de multa. Sin embargo, puedes renovarlo en cualquier momento sin necesidad de volver a examinarte en la autoescuela."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto dura el certificado del psicotécnico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El certificado de aptitud del reconocimiento psicotécnico tiene una validez de 90 días desde la fecha de emisión. En ese plazo debes completar el trámite de renovación con la DGT."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo hacer el psicotécnico en cualquier centro de España?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, puedes acudir a cualquier Centro de Reconocimiento de Conductores autorizado en toda España, independientemente de tu domicilio. No es necesario ir al centro de tu provincia."
+          }
         }
       ]
     }
@@ -173,7 +200,7 @@
       <!-- Game area -->
       <div class="gameandinfo" id="game-area">
         <div class="canvas-wrapper">
-          <canvas id="canvas" width="800" height="500"></canvas>
+          <canvas id="canvas" width="800" height="500" role="img" aria-label="Simulador del test psicotécnico de coordinación bimanual para el carnet de conducir">Tu navegador no soporta Canvas. Necesitas un navegador moderno para jugar al simulador del psicotécnico.</canvas>
 
           <!-- Start screen (over canvas) -->
           <div class="canvas-overlay" id="canvas-start">
@@ -444,6 +471,64 @@
           Los centros suelen atender <strong>con y sin cita previa</strong>, aunque se recomienda reservar hora
           para evitar esperas. El proceso completo dura entre <strong>20 y 45 minutos</strong>.
         </p>
+
+        <h2>Psicotécnico del carnet de conducir por comunidades autónomas</h2>
+        <p>
+          Cada <strong>comunidad autónoma</strong> tiene sus propios centros de reconocimiento autorizados.
+          Los precios pueden variar ligeramente entre regiones:
+        </p>
+        <ul>
+          <li><strong>Psicotécnico en Madrid</strong>: entre 25€ y 50€. Gran cantidad de centros disponibles, especialmente en el centro y alrededores de hospitales</li>
+          <li><strong>Psicotécnico en Barcelona</strong>: entre 25€ y 55€. Muchos centros en el Eixample y zonas bien comunicadas por metro</li>
+          <li><strong>Psicotécnico en Valencia</strong>: entre 20€ y 45€. Centros distribuidos por toda la ciudad y área metropolitana</li>
+          <li><strong>Psicotécnico en Sevilla</strong>: entre 20€ y 40€. Precios generalmente más económicos que en otras grandes ciudades</li>
+          <li><strong>Psicotécnico en Málaga</strong>: entre 25€ y 45€. Centros disponibles en la capital y en la Costa del Sol</li>
+          <li><strong>Psicotécnico en Bilbao</strong>: entre 30€ y 55€. Centros en el centro urbano y municipios cercanos</li>
+          <li><strong>Psicotécnico en Zaragoza</strong>: entre 20€ y 45€. Buenos precios y poca espera en general</li>
+        </ul>
+        <p>
+          En todas las ciudades, puedes <strong>practicar gratis la prueba de coordinación</strong> en PsicoCarnet
+          antes de acudir a tu centro de reconocimiento más cercano.
+        </p>
+
+        <h2>Documentación necesaria para renovar el carnet de conducir</h2>
+        <p>Para <strong>renovar tu carnet de conducir</strong> necesitas llevar al centro médico:</p>
+        <ul>
+          <li><strong>DNI o NIE</strong> en vigor (original)</li>
+          <li><strong>Carnet de conducir</strong> que quieres renovar</li>
+          <li><strong>Gafas o lentillas</strong> si las usas para conducir</li>
+          <li>Informe médico si tienes alguna <strong>enfermedad crónica</strong> o tomas medicación habitual</li>
+        </ul>
+        <p>
+          No necesitas llevar fotos — el centro te hará una foto digital. Tampoco necesitas el carnet
+          caducado, puedes renovar incluso después de que haya expirado.
+        </p>
+
+        <h2>Preguntas frecuentes sobre el psicotécnico y el carnet de conducir</h2>
+        <h3>¿Puedo conducir con el carnet caducado?</h3>
+        <p>
+          <strong>No.</strong> Conducir con el carnet caducado es una <strong>infracción grave</strong> sancionada
+          con hasta <strong>200€ de multa</strong>. Sin embargo, puedes renovarlo en cualquier momento sin
+          necesidad de volver a examinarte en la autoescuela.
+        </p>
+
+        <h3>¿El psicotécnico es igual para todos los carnets?</h3>
+        <p>
+          El reconocimiento básico es similar, pero los <strong>conductores profesionales</strong> (permisos C, D y CAP)
+          requieren pruebas adicionales y más exigentes, especialmente en los tests de visión y tiempo de reacción.
+        </p>
+
+        <h3>¿Puedo hacer el psicotécnico en cualquier centro?</h3>
+        <p>
+          Sí, puedes acudir a <strong>cualquier Centro de Reconocimiento de Conductores autorizado</strong>
+          en toda España, independientemente de tu domicilio. No es necesario ir al centro de tu provincia.
+        </p>
+
+        <h3>¿Cuánto dura el certificado del psicotécnico?</h3>
+        <p>
+          El certificado de aptitud tiene una <strong>validez de 90 días</strong> desde la fecha de emisión.
+          En ese plazo debes completar el trámite de renovación con la DGT.
+        </p>
       </section>
 
       <!-- Ad: between content and CTA -->
@@ -471,10 +556,10 @@
       </footer>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
+    <!-- Firebase SDK (deferred) -->
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script defer src="firebase-config.js"></script>
 
     <script src="chrono.js"></script>
     <script src="checkOnRoad.js"></script>
