@@ -76,13 +76,15 @@
 
       <!-- Mobile message -->
       <div class="mobile-only-msg">
-        <span class="mobile-icon">&#128187;</span>
-        <p>PsicoCarnet funciona en ordenador. Ábrelo desde tu PC o Mac para practicar el psicotécnico.</p>
+        <svg class="mobile-icon-svg" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFE600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <p>Este simulador requiere teclado. Ábrelo desde tu ordenador para practicar el psicotécnico.</p>
       </div>
 
       <!-- Game area (hidden on mobile via CSS) -->
       <div class="game-section desktop-only" id="game-area">
+        <div class="game-layout">
         <div class="canvas-wrapper">
+          <button id="fullscreen-btn" class="fullscreen-btn-overlay" title="Pantalla completa">&#x26F6;</button>
           <canvas id="canvas" width="800" height="500" role="img" aria-label="Simulador del test psicotécnico de coordinación bimanual para el carnet de conducir">Tu navegador no soporta Canvas.</canvas>
 
           <!-- Start screen -->
@@ -144,7 +146,7 @@
           </div>
         </div>
 
-        <div class="stats-bar">
+        <div class="stats-sidebar">
           <div class="info-box">
             <span class="info-label">Vidas</span>
             <span id="lives" class="info-value">5000</span>
@@ -164,7 +166,7 @@
             <span id="highscore" class="info-value">--</span>
           </div>
         </div>
-        <button id="fullscreen-btn" class="fullscreen-btn" title="Pantalla completa">&#x26F6; Pantalla completa</button>
+        </div>
       </div>
 
       <!-- Ad -->
@@ -185,7 +187,7 @@
             <span></span><span>Nombre</span><span>Tiempo</span><span>Precisión</span>
           </div>
           <ol id="lb-list-progressive" class="lb-list">
-            <li class="lb-empty">Cargando...</li>
+            <li class="lb-skeleton"></li><li class="lb-skeleton"></li><li class="lb-skeleton"></li><li class="lb-skeleton"></li><li class="lb-skeleton"></li>
           </ol>
         </div>
         <div class="lb-panel hidden" id="lb-panel-constant">
@@ -193,7 +195,7 @@
             <span></span><span>Nombre</span><span>Tiempo</span><span>Precisión</span>
           </div>
           <ol id="lb-list-constant" class="lb-list">
-            <li class="lb-empty">Cargando...</li>
+            <li class="lb-skeleton"></li><li class="lb-skeleton"></li><li class="lb-skeleton"></li><li class="lb-skeleton"></li><li class="lb-skeleton"></li>
           </ol>
         </div>
       </section>
@@ -347,15 +349,15 @@
           Cada <strong>comunidad autónoma</strong> tiene sus propios centros de reconocimiento autorizados.
           Los precios pueden variar ligeramente entre regiones:
         </p>
-        <ul>
-          <li><strong>Psicotécnico en Madrid</strong>: entre <strong class="highlight">25€ y 50€</strong>. Gran cantidad de centros disponibles, especialmente en el centro y alrededores de hospitales</li>
-          <li><strong>Psicotécnico en Barcelona</strong>: entre <strong class="highlight">25€ y 55€</strong>. Muchos centros en el Eixample y zonas bien comunicadas por metro</li>
-          <li><strong>Psicotécnico en Valencia</strong>: entre <strong class="highlight">20€ y 45€</strong>. Centros distribuidos por toda la ciudad y área metropolitana</li>
-          <li><strong>Psicotécnico en Sevilla</strong>: entre <strong class="highlight">20€ y 40€</strong>. Precios generalmente más económicos que en otras grandes ciudades</li>
-          <li><strong>Psicotécnico en Málaga</strong>: entre <strong class="highlight">25€ y 45€</strong>. Centros disponibles en la capital y en la Costa del Sol</li>
-          <li><strong>Psicotécnico en Bilbao</strong>: entre <strong class="highlight">30€ y 55€</strong>. Centros en el centro urbano y municipios cercanos</li>
-          <li><strong>Psicotécnico en Zaragoza</strong>: entre <strong class="highlight">20€ y 45€</strong>. Buenos precios y poca espera en general</li>
-        </ul>
+        <div class="city-grid">
+          <div class="city-card"><strong>Madrid</strong><span class="city-price">25€ — 50€</span><span class="city-desc">Gran cantidad de centros, especialmente en el centro y alrededores de hospitales</span></div>
+          <div class="city-card"><strong>Barcelona</strong><span class="city-price">25€ — 55€</span><span class="city-desc">Muchos centros en el Eixample y zonas bien comunicadas por metro</span></div>
+          <div class="city-card"><strong>Valencia</strong><span class="city-price">20€ — 45€</span><span class="city-desc">Centros distribuidos por toda la ciudad y área metropolitana</span></div>
+          <div class="city-card"><strong>Sevilla</strong><span class="city-price">20€ — 40€</span><span class="city-desc">Precios generalmente más económicos que en otras grandes ciudades</span></div>
+          <div class="city-card"><strong>Málaga</strong><span class="city-price">25€ — 45€</span><span class="city-desc">Centros disponibles en la capital y en la Costa del Sol</span></div>
+          <div class="city-card"><strong>Bilbao</strong><span class="city-price">30€ — 55€</span><span class="city-desc">Centros en el centro urbano y municipios cercanos</span></div>
+          <div class="city-card"><strong>Zaragoza</strong><span class="city-price">20€ — 45€</span><span class="city-desc">Buenos precios y poca espera en general</span></div>
+        </div>
         <p>
           En todas las ciudades, puedes <strong>practicar gratis la prueba de coordinación</strong> en PsicoCarnet
           antes de acudir a tu centro de reconocimiento más cercano.
@@ -375,30 +377,24 @@
         </p>
 
         <h2>Preguntas frecuentes sobre el psicotécnico y el carnet de conducir</h2>
-        <h3>¿Puedo conducir con el carnet caducado?</h3>
-        <p>
-          <strong>No.</strong> Conducir con el carnet caducado es una <strong>infracción grave</strong> sancionada
-          con hasta <strong class="highlight">200€ de multa</strong>. Sin embargo, puedes renovarlo en cualquier momento sin
-          necesidad de volver a examinarte en la autoescuela.
-        </p>
-
-        <h3>¿El psicotécnico es igual para todos los carnets?</h3>
-        <p>
-          El reconocimiento básico es similar, pero los <strong>conductores profesionales</strong> (permisos C, D y CAP)
-          requieren pruebas adicionales y más exigentes, especialmente en los tests de visión y tiempo de reacción.
-        </p>
-
-        <h3>¿Puedo hacer el psicotécnico en cualquier centro?</h3>
-        <p>
-          Sí, puedes acudir a <strong>cualquier Centro de Reconocimiento de Conductores autorizado</strong>
-          en toda España, independientemente de tu domicilio. No es necesario ir al centro de tu provincia.
-        </p>
-
-        <h3>¿Cuánto dura el certificado del psicotécnico?</h3>
-        <p>
-          El certificado de aptitud tiene una <strong>validez de <strong class="highlight">90 días</strong></strong> desde la fecha de emisión.
-          En ese plazo debes completar el trámite de renovación con la DGT.
-        </p>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>¿Puedo conducir con el carnet caducado?</summary>
+            <div class="faq-answer"><p><strong>No.</strong> Conducir con el carnet caducado es una <strong>infracción grave</strong> sancionada con hasta <strong class="highlight">200€ de multa</strong>. Sin embargo, puedes renovarlo en cualquier momento sin necesidad de volver a examinarte en la autoescuela.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿El psicotécnico es igual para todos los carnets?</summary>
+            <div class="faq-answer"><p>El reconocimiento básico es similar, pero los <strong>conductores profesionales</strong> (permisos C, D y CAP) requieren pruebas adicionales y más exigentes, especialmente en los tests de visión y tiempo de reacción.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿Puedo hacer el psicotécnico en cualquier centro?</summary>
+            <div class="faq-answer"><p>Sí, puedes acudir a <strong>cualquier Centro de Reconocimiento de Conductores autorizado</strong> en toda España, independientemente de tu domicilio. No es necesario ir al centro de tu provincia.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto dura el certificado del psicotécnico?</summary>
+            <div class="faq-answer"><p>El certificado de aptitud tiene una <strong>validez de <strong class="highlight">90 días</strong></strong> desde la fecha de emisión. En ese plazo debes completar el trámite de renovación con la DGT.</p></div>
+          </details>
+        </div>
       </section>
 
       <!-- Ad -->
@@ -417,8 +413,14 @@
       </section>
 
       <footer>
-        <p>&copy; 2026 PsicoCarnet. Simulador de pruebas psicotécnicas para el carnet de conducir.</p>
-        <a href="https://sede.dgt.gob.es/es/permisos-de-conducir/obtencion-renovacion-duplicados-permisos/renovacion-permiso-conduccion/" target="_blank" rel="noopener noreferrer" class="footer-link">Renovar carnet en la DGT</a>
+        <p>&copy; 2026 PsicoCarnet &middot; Simulador de pruebas psicotécnicas para el carnet de conducir</p>
+        <div class="footer-links">
+          <a href="https://sede.dgt.gob.es/es/permisos-de-conducir/obtencion-renovacion-duplicados-permisos/renovacion-permiso-conduccion/" target="_blank" rel="noopener noreferrer" class="footer-link">Renovar carnet en la DGT</a>
+          <span class="footer-sep">&middot;</span>
+          <a href="#" class="footer-link">Aviso Legal</a>
+          <span class="footer-sep">&middot;</span>
+          <a href="#" class="footer-link">Política de Privacidad</a>
+        </div>
       </footer>
     </div>
 

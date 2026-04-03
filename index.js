@@ -67,6 +67,15 @@ window.onload = () => {
 
   loadHighScore();
 
+  function syncRankingTab(mode) {
+    document.querySelectorAll(".lb-tab").forEach((t) => {
+      t.classList.toggle("active", t.dataset.mode === mode);
+    });
+    document.querySelectorAll(".lb-panel").forEach((p) => p.classList.add("hidden"));
+    const panel = document.getElementById("lb-panel-" + mode);
+    if (panel) panel.classList.remove("hidden");
+  }
+
   modeProgressiveBtn.addEventListener("click", () => {
     if (gameStarted) return;
     gameMode = "progressive";
@@ -74,6 +83,7 @@ window.onload = () => {
     modeConstantBtn.classList.remove("active");
     modeDescEl.innerText = "La velocidad aumenta cada 15 segundos";
     loadHighScore();
+    syncRankingTab("progressive");
   });
 
   modeConstantBtn.addEventListener("click", () => {
@@ -83,6 +93,7 @@ window.onload = () => {
     modeProgressiveBtn.classList.remove("active");
     modeDescEl.innerText = "Velocidad constante durante toda la partida";
     loadHighScore();
+    syncRankingTab("constant");
   });
 
   let currentSpeed = 1;
