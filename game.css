@@ -860,10 +860,16 @@ footer p {
   align-items: center;
 }
 
-.game-section:fullscreen canvas,
-.game-section:-webkit-full-screen canvas {
+.game-section:fullscreen .canvas-wrapper,
+.game-section:-webkit-full-screen .canvas-wrapper {
   width: min(95vw, calc(80vh * 1.6));
   height: min(80vh, calc(95vw / 1.6));
+}
+
+.game-section:fullscreen canvas,
+.game-section:-webkit-full-screen canvas {
+  width: 100%;
+  height: 100%;
 }
 
 .game-section:fullscreen .stats-sidebar,
