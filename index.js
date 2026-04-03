@@ -283,7 +283,7 @@ window.onload = () => {
     document.getElementById("submit-score-btn").style.display = "";
     document.getElementById("score-submitted").classList.add("hidden");
 
-    gameSetup.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    canvas.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   function togglePause() {
