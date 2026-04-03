@@ -546,6 +546,13 @@ canvas {
   margin-top: 0;
 }
 
+.seo-content h3 {
+  font-size: 18px;
+  color: #ddd;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
 .seo-content p {
   font-size: 16px;
   line-height: 1.7;
