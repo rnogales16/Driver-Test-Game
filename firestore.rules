@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Leaderboard collections (scores_progressive, scores_constant)
+    match /scores_{mode}/{scoreId} {
+      // Anyone can read scores
+      allow read: if true;
+
+      // Anyone can create a score, but with validation
+      allow create: if
+        request.resource.data.keys().hasAll(['name', 'seconds', 'time', 'accuracy', 'date'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 15
+        && request.resource.data.seconds is int
+        && request.resource.data.seconds >= 0
+        && request.resource.data.seconds <= 3600
+        && request.resource.data.time is string
+        && request.resource.data.accuracy is int
+        && request.resource.data.accuracy >= 0
+        && request.resource.data.accuracy <= 100;
+
+      // No one can update or delete scores
+      allow update, delete: if false;
+    }
+
+    // Block everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
