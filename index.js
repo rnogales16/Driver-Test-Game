@@ -378,11 +378,20 @@ window.onload = () => {
   const gameArea = document.getElementById("game-area");
 
   fullscreenBtn.addEventListener("click", () => {
-    if (gameArea.requestFullscreen) {
-      gameArea.requestFullscreen();
-    } else if (gameArea.webkitRequestFullscreen) {
-      gameArea.webkitRequestFullscreen();
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } else {
+      if (gameArea.requestFullscreen) gameArea.requestFullscreen();
+      else if (gameArea.webkitRequestFullscreen) gameArea.webkitRequestFullscreen();
     }
+  });
+
+  document.addEventListener("fullscreenchange", () => {
+    fullscreenBtn.innerHTML = document.fullscreenElement ? "&#x2716;" : "&#x26F6;";
+  });
+  document.addEventListener("webkitfullscreenchange", () => {
+    fullscreenBtn.innerHTML = document.webkitFullscreenElement ? "&#x2716;" : "&#x26F6;";
   });
 
   // Pause and prevent default for arrow keys
