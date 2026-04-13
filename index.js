@@ -124,10 +124,6 @@ window.onload = () => {
   const RIGHT_MIN = 402;
   const RIGHT_MAX = canvas.width - rightBall.width;
 
-  function isLandscape() {
-    return window.innerWidth > window.innerHeight && window.innerWidth <= 960;
-  }
-
   function setupSlider(trackId, thumbId, ball, minX, maxX) {
     const track = document.getElementById(trackId);
     const thumb = document.getElementById(thumbId);
@@ -138,28 +134,15 @@ window.onload = () => {
     function updateFromTouch(touch) {
       if (!gameStarted || paused || gameOver) return;
       const rect = track.getBoundingClientRect();
-      let ratio;
-      if (isLandscape()) {
-        ratio = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
-      } else {
-        ratio = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-      }
+      const ratio = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
       ball.x = minX + ratio * (maxX - minX);
     }
 
     function syncThumb() {
       const rect = track.getBoundingClientRect();
+      if (rect.width === 0) return;
       const ratio = (ball.x - minX) / (maxX - minX);
-      if (isLandscape()) {
-        if (rect.height === 0) return;
-        thumb.style.left = "";
-        thumb.style.bottom = "";
-        thumb.style.top = (ratio * (rect.height - 48)) + "px";
-      } else {
-        if (rect.width === 0) return;
-        thumb.style.top = "";
-        thumb.style.left = (ratio * (rect.width - 48)) + "px";
-      }
+      thumb.style.left = (ratio * (rect.width - 48)) + "px";
     }
 
     track.addEventListener("touchstart", (e) => {
