@@ -129,7 +129,7 @@ window.onload = () => {
     const thumb = document.getElementById(thumbId);
     if (!track || !thumb) return;
 
-    let dragging = false;
+    let activeTouch = null;
 
     function updateFromTouch(clientX) {
       if (!gameStarted || paused || gameOver) return;
@@ -148,18 +148,30 @@ window.onload = () => {
 
     track.addEventListener("touchstart", (e) => {
       e.preventDefault();
-      dragging = true;
-      updateFromTouch(e.touches[0].clientX);
+      const touch = e.changedTouches[0];
+      activeTouch = touch.identifier;
+      updateFromTouch(touch.clientX);
     }, { passive: false });
 
     track.addEventListener("touchmove", (e) => {
-      if (!dragging) return;
       e.preventDefault();
-      updateFromTouch(e.touches[0].clientX);
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === activeTouch) {
+          updateFromTouch(e.changedTouches[i].clientX);
+          break;
+        }
+      }
     }, { passive: false });
 
-    track.addEventListener("touchend", () => { dragging = false; });
-    track.addEventListener("touchcancel", () => { dragging = false; });
+    track.addEventListener("touchend", (e) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === activeTouch) {
+          activeTouch = null;
+          break;
+        }
+      }
+    });
+    track.addEventListener("touchcancel", () => { activeTouch = null; });
 
     // Sync thumb position each frame
     const origDraw = ball.draw.bind(ball);
@@ -336,13 +348,22 @@ window.onload = () => {
     }
   }
 
-  // Start / Pause button
+  // Resume audio on any user interaction (needed for iOS)
+  function resumeAudio() {
+    if (typeof audioCtx !== "undefined" && audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+  }
+  document.addEventListener("touchstart", resumeAudio, { once: true });
+  document.addEventListener("click", resumeAudio, { once: true });
+
+  // Start button
   startBtn.addEventListener("click", () => {
     if (!gameStarted) {
       gameStarted = true;
       canvasStart.classList.add("hidden");
       canvasGameover.classList.add("hidden");
-      if (typeof audioCtx !== "undefined" && audioCtx.state === "suspended") audioCtx.resume();
+      resumeAudio();
       chronometer.start();
       timerIntervalId = setInterval(updateTimer, 1000);
       canvas.scrollIntoView({ behavior: "smooth", block: "center" });
