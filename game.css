@@ -920,7 +920,7 @@ footer p {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 500px) {
   .mobile-only-msg {
     display: block;
     text-align: center;
@@ -1026,7 +1026,7 @@ footer p {
 }
 
 /* Mobile landscape */
-@media (max-width: 960px) and (orientation: landscape) {
+@media (max-height: 500px) and (orientation: landscape) {
   .hero, .mobile-only-msg, .divider {
     display: none;
   }
