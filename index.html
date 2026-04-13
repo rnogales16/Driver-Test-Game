@@ -73,14 +73,13 @@
 
       <hr class="divider" />
 
-      <!-- Mobile message -->
+      <!-- Mobile hint -->
       <div class="mobile-only-msg">
-        <svg class="mobile-icon-svg" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFE600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        <p>Este simulador requiere teclado. Ábrelo desde tu ordenador para practicar el psicotécnico.</p>
+        <p>Desliza las barras inferiores para mover cada bola</p>
       </div>
 
-      <!-- Game area (hidden on mobile via CSS) -->
-      <div class="game-section desktop-only" id="game-area">
+      <!-- Game area -->
+      <div class="game-section" id="game-area">
         <div class="game-layout">
         <div class="canvas-wrapper">
           <button id="fullscreen-btn" class="fullscreen-btn-overlay" title="Pantalla completa">&#x26F6;</button>
@@ -132,15 +131,15 @@
             <button id="restart-btn" class="btn-start">Volver a jugar</button>
           </div>
 
-          <!-- Touch controls -->
-          <div id="touch-controls" class="touch-controls hidden">
-            <div class="touch-side touch-left">
-              <button class="touch-btn" data-ball="left" data-dir="left">&#9664;</button>
-              <button class="touch-btn" data-ball="left" data-dir="right">&#9654;</button>
+          <!-- Mobile slider controls -->
+          <div id="slider-controls" class="slider-controls hidden">
+            <div class="slider-track" id="slider-left">
+              <span class="slider-label">Bola izquierda</span>
+              <div class="slider-thumb" id="thumb-left"></div>
             </div>
-            <div class="touch-side touch-right">
-              <button class="touch-btn" data-ball="right" data-dir="left">&#9664;</button>
-              <button class="touch-btn" data-ball="right" data-dir="right">&#9654;</button>
+            <div class="slider-track" id="slider-right">
+              <span class="slider-label">Bola derecha</span>
+              <div class="slider-thumb" id="thumb-right"></div>
             </div>
           </div>
         </div>
@@ -175,7 +174,7 @@
       </div>
 
       <!-- Leaderboard -->
-      <section class="leaderboard-section desktop-only">
+      <section class="leaderboard-section">
         <h2>Ranking Global</h2>
         <div class="lb-tabs">
           <button class="lb-tab active" data-mode="progressive">Progresivo</button>

@@ -51,12 +51,12 @@ window.onload = () => {
   const modeProgressiveBtn = document.getElementById("mode-progressive");
   const modeConstantBtn = document.getElementById("mode-constant");
   const modeDescEl = document.getElementById("mode-desc");
-  const touchControls = document.getElementById("touch-controls");
+  const sliderControls = document.getElementById("slider-controls");
 
-  // Detect mobile and show touch controls
+  // Detect mobile and show slider controls
   const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  if (isMobile && touchControls) {
-    touchControls.classList.remove("hidden");
+  if (isMobile && sliderControls) {
+    sliderControls.classList.remove("hidden");
   }
 
   function loadHighScore() {
@@ -118,44 +118,60 @@ window.onload = () => {
     }
   }
 
-  // Touch controls
-  if (touchControls) {
-    const touchBtns = touchControls.querySelectorAll(".touch-btn");
-    touchBtns.forEach((btn) => {
-      const ball = btn.dataset.ball;
-      const dir = btn.dataset.dir;
-      let touchInterval = null;
+  // Mobile slider controls
+  const LEFT_MIN = 0;
+  const LEFT_MAX = 343;
+  const RIGHT_MIN = 402;
+  const RIGHT_MAX = canvas.width - rightBall.width;
 
-      function startMove() {
-        if (!gameStarted || paused || gameOver) return;
-        doMove();
-        touchInterval = setInterval(doMove, 30);
-      }
+  function setupSlider(trackId, thumbId, ball, minX, maxX) {
+    const track = document.getElementById(trackId);
+    const thumb = document.getElementById(thumbId);
+    if (!track || !thumb) return;
 
-      function stopMove() {
-        clearInterval(touchInterval);
-        touchInterval = null;
-      }
+    let dragging = false;
 
-      function doMove() {
-        if (ball === "left" && dir === "left") {
-          if (leftBall.x - MOVE_STEP >= 0) leftBall.x -= MOVE_STEP;
-        } else if (ball === "left" && dir === "right") {
-          if (leftBall.x + MOVE_STEP <= 343) leftBall.x += MOVE_STEP;
-        } else if (ball === "right" && dir === "left") {
-          if (rightBall.x - MOVE_STEP >= 402) rightBall.x -= MOVE_STEP;
-        } else if (ball === "right" && dir === "right") {
-          if (rightBall.x + MOVE_STEP <= canvas.width - rightBall.width) rightBall.x += MOVE_STEP;
-        }
-      }
+    function updateFromTouch(clientX) {
+      if (!gameStarted || paused || gameOver) return;
+      const rect = track.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      ball.x = minX + ratio * (maxX - minX);
+      thumb.style.left = (ratio * (rect.width - 48)) + "px";
+    }
 
-      btn.addEventListener("touchstart", (e) => { e.preventDefault(); startMove(); });
-      btn.addEventListener("touchend", stopMove);
-      btn.addEventListener("touchcancel", stopMove);
-      btn.addEventListener("mousedown", startMove);
-      btn.addEventListener("mouseup", stopMove);
-      btn.addEventListener("mouseleave", stopMove);
-    });
+    function syncThumb() {
+      const rect = track.getBoundingClientRect();
+      if (rect.width === 0) return;
+      const ratio = (ball.x - minX) / (maxX - minX);
+      thumb.style.left = (ratio * (rect.width - 48)) + "px";
+    }
+
+    track.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      dragging = true;
+      updateFromTouch(e.touches[0].clientX);
+    }, { passive: false });
+
+    track.addEventListener("touchmove", (e) => {
+      if (!dragging) return;
+      e.preventDefault();
+      updateFromTouch(e.touches[0].clientX);
+    }, { passive: false });
+
+    track.addEventListener("touchend", () => { dragging = false; });
+    track.addEventListener("touchcancel", () => { dragging = false; });
+
+    // Sync thumb position each frame
+    const origDraw = ball.draw.bind(ball);
+    ball.draw = function() {
+      origDraw();
+      syncThumb();
+    };
+  }
+
+  if (isMobile) {
+    setupSlider("slider-left", "thumb-left", leftBall, LEFT_MIN, LEFT_MAX);
+    setupSlider("slider-right", "thumb-right", rightBall, RIGHT_MIN, RIGHT_MAX);
   }
 
   function gameLoop() {

@@ -402,41 +402,55 @@ kbd {
   display: none;
 }
 
-/* === TOUCH CONTROLS === */
-.touch-controls {
+/* === MOBILE SLIDER CONTROLS === */
+.slider-controls {
   display: flex;
-  justify-content: space-between;
-  margin-top: 12px;
-  gap: 20px;
+  gap: 16px;
+  padding: 12px 0;
+  width: 100%;
+  touch-action: none;
 }
 
-.touch-controls.hidden {
+.slider-controls.hidden {
   display: none;
 }
 
-.touch-side {
-  display: flex;
-  gap: 10px;
-}
-
-.touch-btn {
-  width: 64px;
-  height: 64px;
-  font-size: 24px;
+.slider-track {
+  flex: 1;
+  height: 56px;
   background: #1a1a1a;
   border: 1px solid #2a2a2a;
   border-radius: 12px;
-  color: #FFE600;
-  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: manipulation;
-  transition: all 0.15s ease;
 }
 
-.touch-btn:active {
+.slider-label {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+.slider-thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 48px;
+  left: calc(50% - 24px);
   background: #FFE600;
-  color: #000;
+  border-radius: 8px;
+  cursor: grab;
+  touch-action: none;
 }
 
 /* === AD CONTAINER === */
@@ -907,28 +921,68 @@ footer p {
 }
 
 @media (max-width: 768px) {
-  .desktop-only {
-    display: none !important;
-  }
-
   .mobile-only-msg {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    background: #1a1a1a;
-    border: 1px solid rgba(255, 230, 0, 0.3);
-    border-radius: 12px;
-    padding: 32px 24px;
-    margin: 0 auto 32px;
-    max-width: 500px;
+    display: block;
     text-align: center;
+    margin-bottom: 12px;
   }
 
   .mobile-only-msg p {
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stats-sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .canvas-wrapper {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .slider-controls {
+    display: flex !important;
+  }
+
+  .instructions-grid {
+    display: none;
+  }
+
+  .overlay-instruction {
+    font-size: 0.95rem;
+    padding: 0 20px;
+  }
+
+  .info-box {
+    min-width: 70px;
+    padding: 6px 10px;
+  }
+
+  .info-value {
+    font-size: 1.1rem;
+  }
+
+  .info-label {
+    font-size: 0.6rem;
+  }
+
+  .fullscreen-btn-overlay {
+    display: none;
   }
 
   h1 {
