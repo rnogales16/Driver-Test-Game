@@ -1,57 +1,65 @@
-# Driver Test Game
+# PsicoCarnet
 
-A reaction-testing web game where you control **two balls simultaneously** on separate scrolling roads. Keep both balls inside the road lines as long as possible — the speed increases over time!
+Simulador gratuito del test psicotécnico para renovar o sacarte el carnet de conducir en España. Practica la prueba de coordinación bimanual y reflejos.
 
-## How to Play
+**[psicocarnet.com](https://psicocarnet.com)**
 
-1. Open `index.html` in your browser
-2. Click **Start Test**
-3. Controls:
-   - **Left ball**: `A` (left) / `D` (right)
-   - **Right ball**: `←` (left) / `→` (right)
-   - **Pause**: `Space`
-4. You start with **1000 lives** (500 per ball). Each frame a ball is off-road, you lose 1 life
-5. The road speed increases every 15 seconds — survive as long as you can!
+## Cómo jugar
+
+1. Abre [psicocarnet.com](https://psicocarnet.com)
+2. Elige modo **Progresivo** o **Constante**
+3. Pulsa **Comenzar**
+4. Controles:
+   - **Bola izquierda**: `A` / `D`
+   - **Bola derecha**: `←` / `→`
+   - **Pausa**: `Espacio`
+   - **Móvil**: desliza las barras inferiores
+5. Mantén ambas bolas dentro de la carretera amarilla el mayor tiempo posible
 
 ## Features
 
-- Dual-ball gameplay with independent keyboard controls
-- Infinite scrolling road animation on HTML5 Canvas
-- Pixel-perfect collision detection using the [Midpoint Circle Algorithm](https://en.wikipedia.org/wiki/Midpoint_circle_algorithm)
-- Progressive difficulty — road speed increases over time
-- Pause / resume with Space
-- High score saved in localStorage
-- Game Over screen with stats and record tracking
-- Audio feedback when off-road
+- Dos modos de juego: velocidad progresiva o constante
+- Controles táctiles para móvil (sliders multi-touch)
+- Detección de colisiones por pixel
+- Ranking global online (Firebase)
+- High score local por modo
+- Estadísticas al final: precisión, mejor racha, velocidad máxima
+- Pantalla completa
+- PWA — se puede instalar como app en móvil
+- SEO optimizado con FAQ Schema
 
 ## Tech Stack
 
-- **HTML5 Canvas** — rendering and pixel-based collision detection
-- **CSS3** — layout, gradients, animations
-- **Vanilla JavaScript (ES6)** — game loop with `requestAnimationFrame`, classes, event handling
+- **HTML5 Canvas** — renderizado y detección de colisiones
+- **CSS3** — diseño responsive, dark theme
+- **Vanilla JavaScript (ES6)** — game loop, clases, Web Audio API
+- **Firebase Firestore** — leaderboard online
+- **GitHub Pages** — hosting
+- **Cloudflare** — DNS
 
-## Project Structure
+## Estructura
 
 ```
-├── index.html          # Main page
-├── game.css            # Styles
-├── index.js            # Game loop, controls, UI
-├── balls.js            # Ball class
-├── roads.js            # Road class (infinite scroll)
-├── chrono.js           # Chronometer class
-├── checkOnRoad.js      # Pixel collision detection
+├── index.html          # Página principal
+├── game.css            # Estilos
+├── index.js            # Game loop, controles, UI
+├── balls.js            # Clase Ball
+├── roads.js            # Clase Road (scroll infinito)
+├── chrono.js           # Cronómetro
+├── checkOnRoad.js      # Detección de colisiones
+├── leaderboard.js      # Ranking con Firebase
+├── firebase-config.js  # Config de Firebase
+├── manifest.json       # PWA manifest
+├── sitemap.xml         # Sitemap SEO
+├── ads.txt             # Google AdSense
 └── images/
     ├── Circulo_verde.png
-    ├── left-road-image.png
-    ├── right-road-image.png
-    └── beep.mov
+    ├── left-road-image.svg
+    └── right-road-image.svg
 ```
 
-## Running Locally
-
-No build step needed — just open `index.html` in any modern browser.
+## Desarrollo local
 
 ```bash
-# Or use a local server to avoid CORS issues with audio:
 npx serve .
 ```
